@@ -124,7 +124,7 @@ impl CliCommand for VersionCommand {
         println!();
         println!("  Goblin v0.1.0");
         println!();
-        println!("  Forge speed + Hermes intelligence");
+        println!("  Goblin speed + Hermes intelligence");
         println!("  https://github.com/iangogentic/goblin-agent");
         println!();
         Ok(())
