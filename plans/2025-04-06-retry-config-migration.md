@@ -6,7 +6,7 @@ The objective is to move the retry configuration from the `Workflow` struct to t
 ## Implementation Plan
 
 ### 1. Update the Environment struct
-Modify the `Environment` struct in `crates/forge_domain/src/env.rs` to include a `RetryConfig` field.
+Modify the `Environment` struct in `crates/goblin_domain/src/env.rs` to include a `RetryConfig` field.
 
 ```rust
 #[derive(Debug, Setters, Clone, Serialize, Deserialize)]
@@ -21,20 +21,20 @@ pub struct Environment {
 ```
 
 ### 2. Add Environment Variable Support for Retry Configuration
-Enhance `ForgeEnvironmentService` in `crates/forge_infra/src/env.rs` to read retry configuration from environment variables:
+Enhance `GoblinEnvironmentService` in `crates/goblin_infra/src/env.rs` to read retry configuration from environment variables:
 
-- `FORGE_RETRY_INITIAL_BACKOFF_MS` - Initial backoff delay in milliseconds
-- `FORGE_RETRY_BACKOFF_FACTOR` - Multiplication factor for each retry attempt
-- `FORGE_RETRY_MAX_ATTEMPTS` - Maximum number of retry attempts
-- `FORGE_RETRY_STATUS_CODES` - Comma-separated list of HTTP status codes that should trigger retries
+- `GOBLIN_RETRY_INITIAL_BACKOFF_MS` - Initial backoff delay in milliseconds
+- `GOBLIN_RETRY_BACKOFF_FACTOR` - Multiplication factor for each retry attempt
+- `GOBLIN_RETRY_MAX_ATTEMPTS` - Maximum number of retry attempts
+- `GOBLIN_RETRY_STATUS_CODES` - Comma-separated list of HTTP status codes that should trigger retries
 
 The service should read these variables and use them to configure the `RetryConfig` instance, falling back to default values if the environment variables are not set.
 
 ### 3. Remove RetryConfig from Workflow struct
-Remove the `retry` field from the `Workflow` struct in `crates/forge_domain/src/workflow.rs`.
+Remove the `retry` field from the `Workflow` struct in `crates/goblin_domain/src/workflow.rs`.
 
-### 4. Update ForgeProviderService
-Modify the `ForgeProviderService::new` method in `crates/forge_services/src/provider.rs` to obtain the retry configuration from the environment rather than from the workflow:
+### 4. Update GoblinProviderService
+Modify the `GoblinProviderService::new` method in `crates/goblin_services/src/provider.rs` to obtain the retry configuration from the environment rather than from the workflow:
 
 ```rust
 pub fn new<F: Infrastructure>(infra: Arc<F>) -> Self {
@@ -49,10 +49,10 @@ pub fn new<F: Infrastructure>(infra: Arc<F>) -> Self {
 ```
 
 ### 5. Update WorkflowRepository trait
-Update the `WorkflowRepository` trait in `crates/forge_services/src/infra.rs` to remove any references to retry configuration.
+Update the `WorkflowRepository` trait in `crates/goblin_services/src/infra.rs` to remove any references to retry configuration.
 
-### 6. Update ForgeWorkflowRepository implementation
-Modify the `ForgeWorkflowRepository` implementation in `crates/forge_infra/src/workflow.rs` to reflect the changes in the `Workflow` struct.
+### 6. Update GoblinWorkflowRepository implementation
+Modify the `GoblinWorkflowRepository` implementation in `crates/goblin_infra/src/workflow.rs` to reflect the changes in the `Workflow` struct.
 
 ### 7. Update tests
 Update any tests that rely on the `retry` field in the `Workflow` struct to use the new field in `Environment` instead.

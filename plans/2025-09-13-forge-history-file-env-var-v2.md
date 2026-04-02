@@ -2,7 +2,7 @@
 
 ## Objective
 
-Implement support for per-project custom history files through the `FORGE_HISTORY_FILE` environment variable, allowing users to maintain separate prompt histories for different projects while preserving the current default behavior. The implementation will use the existing global history file by default and only override when the environment variable is explicitly set, supporting both absolute and relative paths with proper Windows compatibility.
+Implement support for per-project custom history files through the `GOBLIN_HISTORY_FILE` environment variable, allowing users to maintain separate prompt histories for different projects while preserving the current default behavior. The implementation will use the existing global history file by default and only override when the environment variable is explicitly set, supporting both absolute and relative paths with proper Windows compatibility.
 
 ## Current Analysis
 
@@ -10,31 +10,31 @@ Implement support for per-project custom history files through the `FORGE_HISTOR
 
 Based on the codebase analysis, the current history implementation:
 
-**History File Location**: Currently determined by `Environment::history_path()` method in `crates/forge_domain/src/env.rs:68-70`, which returns `self.base_path.join(".forge_history")` - a single global file.
+**History File Location**: Currently determined by `Environment::history_path()` method in `crates/goblin_domain/src/env.rs:68-70`, which returns `self.base_path.join(".goblin_history")` - a single global file.
 
-**History Usage**: History is initialized in `crates/forge_main/src/editor.rs:68-71` using `FileBackedHistory::with_file()` with the path from `env.history_path()`.
+**History Usage**: History is initialized in `crates/goblin_main/src/editor.rs:68-71` using `FileBackedHistory::with_file()` with the path from `env.history_path()`.
 
-**Environment Configuration**: Environment variables are parsed in `ForgeEnvironmentInfra::get()` method in `crates/forge_infra/src/env.rs:39-78`, which already supports parsing custom environment variables like `FORGE_DUMP_AUTO_OPEN`, `FORGE_TOOL_TIMEOUT`, etc.
+**Environment Configuration**: Environment variables are parsed in `GoblinEnvironmentInfra::get()` method in `crates/goblin_infra/src/env.rs:39-78`, which already supports parsing custom environment variables like `GOBLIN_DUMP_AUTO_OPEN`, `GOBLIN_TOOL_TIMEOUT`, etc.
 
 **Default Behavior Priority**: The implementation prioritizes maintaining existing behavior, only overriding when users explicitly set the environment variable.
 
 ## Implementation Plan
 
 ### 1. Environment Variable Support
-- [ ] **Task 1**: Add `FORGE_HISTORY_FILE` environment variable support to `ForgeEnvironmentInfra::get()` method
-  - **Location**: `crates/forge_infra/src/env.rs:39-78`
-  - **Rationale**: This is where all environment variable parsing occurs, following the established pattern of other FORGE_* environment variables
+- [ ] **Task 1**: Add `GOBLIN_HISTORY_FILE` environment variable support to `GoblinEnvironmentInfra::get()` method
+  - **Location**: `crates/goblin_infra/src/env.rs:39-78`
+  - **Rationale**: This is where all environment variable parsing occurs, following the established pattern of other GOBLIN_* environment variables
   - **Implementation**: Use existing `parse_env::<String>()` function to retrieve the custom history file path, keeping it optional to preserve default behavior
 
 ### 2. Environment Struct Extension
 - [ ] **Task 2**: Add `custom_history_path` field to `Environment` struct to store the resolved history file path
-  - **Location**: `crates/forge_domain/src/env.rs:16-61`
+  - **Location**: `crates/goblin_domain/src/env.rs:16-61`
   - **Rationale**: Following the established pattern of storing environment-specific configurations as fields, enabling proper dependency injection and testing
   - **Implementation**: Add `Option<PathBuf>` field with proper serialization attributes to maintain backward compatibility
 
 ### 3. History Path Resolution Enhancement with Relative Path Support
 - [ ] **Task 3**: Modify `Environment::history_path()` to support custom path resolution with relative path handling
-  - **Location**: `crates/forge_domain/src/env.rs:68-70`
+  - **Location**: `crates/goblin_domain/src/env.rs:68-70`
   - **Rationale**: This method is the single source of truth for history file location and needs to handle environment variable override while maintaining current default behavior
   - **Implementation**: 
     - Check for custom_history_path first (from environment variable)
@@ -65,7 +65,7 @@ Based on the codebase analysis, the current history implementation:
     - Add specific error messages for common issues (permissions, invalid paths, disk space)
 
 <task_status>
-[x]: DONE - Task 1: Add FORGE_HISTORY_FILE environment variable support
+[x]: DONE - Task 1: Add GOBLIN_HISTORY_FILE environment variable support
 [~]: IN_PROGRESS - Task 2: Add custom_history_path field to Environment struct  
 [ ]: PENDING - Task 3: Modify Environment::history_path() with relative path support
 [ ]: PENDING - Task 4: Implement Windows-specific path handling
@@ -80,9 +80,9 @@ Based on the codebase analysis, the current history implementation:
 - Zero breaking changes to existing APIs or user workflows
 
 ### Environment Variable Functionality
-- Environment variable `FORGE_HISTORY_FILE` successfully overrides default history location only when set
+- Environment variable `GOBLIN_HISTORY_FILE` successfully overrides default history location only when set
 - Absolute paths specified in environment variable are used directly without modification
-- Relative paths are resolved relative to current working directory where forge is invoked
+- Relative paths are resolved relative to current working directory where goblin is invoked
 - Missing or unset environment variable maintains exact current behavior
 
 ### Path Resolution Support
@@ -115,7 +115,7 @@ Based on the codebase analysis, the current history implementation:
 
 ### 3. **Relative Path Confusion**
    **Risk**: Users might not understand relative path resolution context
-   **Mitigation**: Clear documentation explaining resolution is relative to working directory, not forge binary location
+   **Mitigation**: Clear documentation explaining resolution is relative to working directory, not goblin binary location
 
 ### 4. **Directory Creation Permissions**
    **Risk**: Creating parent directories might fail due to permissions
@@ -127,13 +127,13 @@ Based on the codebase analysis, the current history implementation:
 
 ## Alternative Approaches
 
-### 1. **Always Use Current Directory**: Default to `./.forge_history` instead of global file
+### 1. **Always Use Current Directory**: Default to `./.goblin_history` instead of global file
    **Trade-offs**: More intuitive per-project behavior but breaks existing user expectations
 
-### 2. **Auto-Detection**: Automatically look for `.forge_history` in current directory first
+### 2. **Auto-Detection**: Automatically look for `.goblin_history` in current directory first
    **Trade-offs**: Zero configuration but might create unexpected behavior changes
 
-### 3. **Forge.yaml Integration**: Add history_file field to project configuration
+### 3. **Goblin.yaml Integration**: Add history_file field to project configuration
    **Trade-offs**: More permanent per-project setting but requires configuration file management
 
 ## Implementation Dependencies
@@ -159,9 +159,9 @@ Based on the codebase analysis, the current history implementation:
 ## Success Metrics
 
 ### Functional Success
-- Users can set `FORGE_HISTORY_FILE=./project-history` for relative paths
-- Users can set `FORGE_HISTORY_FILE=/absolute/path/history` for absolute paths
-- Windows users can use `FORGE_HISTORY_FILE=C:\Users\Name\history` successfully
+- Users can set `GOBLIN_HISTORY_FILE=./project-history` for relative paths
+- Users can set `GOBLIN_HISTORY_FILE=/absolute/path/history` for absolute paths
+- Windows users can use `GOBLIN_HISTORY_FILE=C:\Users\Name\history` successfully
 - Unset environment variable maintains exact current behavior
 
 ### User Experience Success
@@ -195,13 +195,13 @@ Based on the codebase analysis, the current history implementation:
 ### Environment Variable Examples
 ```bash
 # Unix/Linux/macOS examples
-FORGE_HISTORY_FILE=./project-history
-FORGE_HISTORY_FILE=../shared/team-history
-FORGE_HISTORY_FILE=/home/user/forge-histories/project1
+GOBLIN_HISTORY_FILE=./project-history
+GOBLIN_HISTORY_FILE=../shared/team-history
+GOBLIN_HISTORY_FILE=/home/user/goblin-histories/project1
 
 # Windows examples
-FORGE_HISTORY_FILE=.\project-history
-FORGE_HISTORY_FILE=..\shared\team-history
-FORGE_HISTORY_FILE=C:\Users\Name\ForgeHistories\project1
-FORGE_HISTORY_FILE=\\server\share\team-histories\project1
+GOBLIN_HISTORY_FILE=.\project-history
+GOBLIN_HISTORY_FILE=..\shared\team-history
+GOBLIN_HISTORY_FILE=C:\Users\Name\GoblinHistories\project1
+GOBLIN_HISTORY_FILE=\\server\share\team-histories\project1
 ```

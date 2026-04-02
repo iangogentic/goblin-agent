@@ -1,4 +1,4 @@
-# Code-Forge 🛠️
+# Code-Goblin 🛠️
 
 A sophisticated AI-powered coding assistant platform built in Rust, designed to provide intelligent code generation, manipulation, and analysis capabilities through a modular and extensible architecture.
 
@@ -32,21 +32,21 @@ cargo run --release
 ## 🏗️ Project Structure
 
 ```
-code-forge/
+code-goblin/
 ├── crates/
-│   ├── forge_main/        # CLI and main application logic
-│   ├── forge_domain/      # Core domain models and interfaces
-│   ├── forge_services/      # HTTP API and database management
-│   ├── forge_tool/        # Tool implementations
-│   └── forge_walker/      # File system operations
+│   ├── goblin_main/        # CLI and main application logic
+│   ├── goblin_domain/      # Core domain models and interfaces
+│   ├── goblin_services/      # HTTP API and database management
+│   ├── goblin_tool/        # Tool implementations
+│   └── goblin_walker/      # File system operations
 ```
 
 ## 🛠️ Core Components
 
-- **Domain Layer** (`forge_domain`) - Core business logic and interfaces
-- **Tool Layer** (`forge_tool`) - Development tools implementation
-- **Server Layer** (`forge_services`) - API endpoints and persistence
-- **Main Application** (`forge_main`) - CLI and application coordination
+- **Domain Layer** (`goblin_domain`) - Core business logic and interfaces
+- **Tool Layer** (`goblin_tool`) - Development tools implementation
+- **Server Layer** (`goblin_services`) - API endpoints and persistence
+- **Main Application** (`goblin_main`) - CLI and application coordination
 
 ## 🔧 Configuration
 

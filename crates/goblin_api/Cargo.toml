@@ -1,0 +1,33 @@
+[package]
+name = "goblin_api"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+url.workspace = true
+async-trait.workspace = true
+goblin_domain.workspace = true
+goblin_stream.workspace = true
+goblin_services.workspace = true
+goblin_repo.workspace = true
+goblin_infra.workspace = true
+futures.workspace = true
+
+
+
+
+
+
+
+
+goblin_app.workspace = true
+serde_json.workspace = true
+goblin_config.workspace = true
+
+[dev-dependencies]
+
+tokio = { workspace = true }
+
+

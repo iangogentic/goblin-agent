@@ -2,14 +2,14 @@
 
 ## Objective
 
-Extend the `AgentLoaderService` to load agents from both the existing `{HOME}/forge/agents/` directory and an additional `CWD/.forge/agents/` directory, combining agents from both sources while maintaining the current architecture patterns and safety guarantees.
+Extend the `AgentLoaderService` to load agents from both the existing `{HOME}/goblin/agents/` directory and an additional `CWD/.goblin/agents/` directory, combining agents from both sources while maintaining the current architecture patterns and safety guarantees.
 
 ## Implementation Plan
 
 ### Phase 1: Domain Layer Extensions
 - [x] Task 1. **Add CWD agent path method to Environment**
-  - Add `agent_cwd_path()` method to the `Environment` struct in `crates/forge_domain/src/env.rs` 
-  - Method should return `PathBuf::from(".forge/agents")` to point to the current working directory
+  - Add `agent_cwd_path()` method to the `Environment` struct in `crates/goblin_domain/src/env.rs` 
+  - Method should return `PathBuf::from(".goblin/agents")` to point to the current working directory
   - Follow the same pattern as existing `agent_path()` method but use current directory as base
 
 - [x] Task 2. **Update EnvironmentInfra trait usage documentation**  
@@ -18,7 +18,7 @@ Extend the `AgentLoaderService` to load agents from both the existing `{HOME}/fo
 
 ### Phase 2: Service Layer Implementation
 - [x] Task 3. **Extend AgentLoaderService init method**
-  - Modify `init()` method in `crates/forge_services/src/agent_loader.rs` to load from three sources instead of two
+  - Modify `init()` method in `crates/goblin_services/src/agent_loader.rs` to load from three sources instead of two
   - Keep existing built-in agents loading (`init_default()`)
   - Keep existing custom agents loading from global directory (`init_custom()`)  
   - Add new CWD agents loading (`init_cwd()`) method call
@@ -55,9 +55,9 @@ Extend the `AgentLoaderService` to load agents from both the existing `{HOME}/fo
   - Add test cases for the new method in existing environment tests
 
 - [x] Task 9. **Add unit tests for CWD agent loading**
-  - Create test fixtures in `crates/forge_services/src/fixtures/` for CWD agent scenarios
+  - Create test fixtures in `crates/goblin_services/src/fixtures/` for CWD agent scenarios
   - Test successful CWD agent loading with valid markdown files
-  - Test graceful handling of missing CWD `.forge/agents/` directory
+  - Test graceful handling of missing CWD `.goblin/agents/` directory
   - Test agent conflict resolution between global and CWD directories
 
 - [x] Task 10. **Add integration tests**
@@ -79,9 +79,9 @@ Extend the `AgentLoaderService` to load agents from both the existing `{HOME}/fo
 ## Verification Criteria
 
 - All existing built-in agents continue to load successfully from embedded sources
-- Global custom agents continue to load from `{HOME}/forge/agents/` directory  
-- CWD agents load from `.forge/agents/` directory when it exists
-- Missing `.forge/agents/` directory doesn't cause errors or prevent other agent loading
+- Global custom agents continue to load from `{HOME}/goblin/agents/` directory  
+- CWD agents load from `.goblin/agents/` directory when it exists
+- Missing `.goblin/agents/` directory doesn't cause errors or prevent other agent loading
 - Agent precedence follows documented order: Built-in > Global > CWD
 - Agents with duplicate IDs are resolved correctly with later sources taking precedence
 - All existing tests pass without modification
@@ -106,9 +106,9 @@ Extend the `AgentLoaderService` to load agents from both the existing `{HOME}/fo
 
 ## Alternative Approaches
 
-1. **Configuration-driven approach**: Add agent directory paths to forge.yaml configuration file, allowing users to specify custom agent directories explicitly
+1. **Configuration-driven approach**: Add agent directory paths to goblin.yaml configuration file, allowing users to specify custom agent directories explicitly
 
-2. **Environment variable approach**: Support `FORGE_AGENT_PATHS` environment variable for colon-separated list of agent directories
+2. **Environment variable approach**: Support `GOBLIN_AGENT_PATHS` environment variable for colon-separated list of agent directories
 
 3. **Recursive directory scanning**: Modify existing agent loading to recursively scan subdirectories within agent paths
 

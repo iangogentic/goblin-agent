@@ -148,8 +148,8 @@ npm run test:bounty
 
 ## Workflow Source
 
-`bounty.yml` is auto-generated from Rust source in `crates/forge_ci`. Do not edit it by hand — modify `crates/forge_ci/src/workflows/bounty.rs` and regenerate with:
+`bounty.yml` is auto-generated from Rust source in `crates/goblin_ci`. Do not edit it by hand — modify `crates/goblin_ci/src/workflows/bounty.rs` and regenerate with:
 
 ```sh
-cargo test -p forge_ci
+cargo test -p goblin_ci
 ```

@@ -7,25 +7,25 @@ Add environment variable support to the shell tool, allowing agents to specify e
 ## Implementation Plan
 
 - [x] **Task 1. Update Shell Tool Domain Model**  
-  Extend the `Shell` struct in `crates/forge_domain/src/tools.rs` to include an optional `env` field that accepts a vector of environment variable names. This field will specify which environment variables should be passed to the command execution environment.
+  Extend the `Shell` struct in `crates/goblin_domain/src/tools.rs` to include an optional `env` field that accepts a vector of environment variable names. This field will specify which environment variables should be passed to the command execution environment.
 
 - [x] **Task 2. Update CommandInfra Interface**  
-  Modify the `CommandInfra` trait in `crates/forge_services/src/infra.rs` to accept environment variable names in the `execute_command` and `execute_command_raw` methods. This involves adding a new parameter `env_vars: Option<Vec<String>>` to both methods.
+  Modify the `CommandInfra` trait in `crates/goblin_services/src/infra.rs` to accept environment variable names in the `execute_command` and `execute_command_raw` methods. This involves adding a new parameter `env_vars: Option<Vec<String>>` to both methods.
 
 - [x] **Task 3. Update ShellService Interface**  
-  Extend the `ShellService` trait in `crates/forge_app/src/services.rs` to accept environment variable names in the `execute` method. Add `env_vars: Option<Vec<String>>` parameter to maintain consistency with the updated CommandInfra interface.
+  Extend the `ShellService` trait in `crates/goblin_app/src/services.rs` to accept environment variable names in the `execute` method. Add `env_vars: Option<Vec<String>>` parameter to maintain consistency with the updated CommandInfra interface.
 
 - [x] **Task 4. Update Shell Service Implementation**  
-  Modify the `ForgeShell` implementation in `crates/forge_services/src/tool_services/shell.rs` to pass environment variable names to the infrastructure layer. Update the `execute` method to forward the env_vars parameter to the command infrastructure.
+  Modify the `GoblinShell` implementation in `crates/goblin_services/src/tool_services/shell.rs` to pass environment variable names to the infrastructure layer. Update the `execute` method to forward the env_vars parameter to the command infrastructure.
 
 - [x] **Task 5. Update Command Executor Implementation**  
-  Enhance the `ForgeCommandExecutorService` in `crates/forge_infra/src/executor.rs` to read specified environment variables from the system and apply them to the command execution context. Modify the `prepare_command` method to set the requested environment variables on the Command instance.
+  Enhance the `GoblinCommandExecutorService` in `crates/goblin_infra/src/executor.rs` to read specified environment variables from the system and apply them to the command execution context. Modify the `prepare_command` method to set the requested environment variables on the Command instance.
 
 - [x] **Task 6. Update Tool Operation Processing**  
-  Modify the shell tool operation handling in `crates/forge_app/src/operation.rs` and `crates/forge_app/src/tool_executor.rs` to extract environment variable names from the Shell tool input and pass them through the service chain.
+  Modify the shell tool operation handling in `crates/goblin_app/src/operation.rs` and `crates/goblin_app/src/tool_executor.rs` to extract environment variable names from the Shell tool input and pass them through the service chain.
 
 - [x] **Task 7. Update Infrastructure Implementations**  
-  Update all CommandInfra implementations to support the new environment variable parameter, including the main implementation in `crates/forge_infra/src/forge_infra.rs` and any test implementations in `crates/forge_services/src/attachment.rs`.
+  Update all CommandInfra implementations to support the new environment variable parameter, including the main implementation in `crates/goblin_infra/src/goblin_infra.rs` and any test implementations in `crates/goblin_services/src/attachment.rs`.
 
 - [x] **Task 8. Add Comprehensive Test Coverage**  
   Create tests to verify environment variable functionality works correctly, including tests for missing environment variables, empty env lists, and successful environment variable application during command execution.

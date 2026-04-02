@@ -1,5 +1,5 @@
 name: ✨ Feature Request
-description: Suggest a new feature or enhancement for Forge
+description: Suggest a new feature or enhancement for Goblin
 title: "[Feature]: "
 labels: ["type: feature"]
 body:
@@ -69,7 +69,7 @@ body:
         Example workflow:
         ```
         # Show the exact commands or steps you'll use
-        forge new-feature --example
+        goblin new-feature --example
         ```
     validations:
       required: true
@@ -86,7 +86,7 @@ body:
         From a user's perspective, the feature should work like this:
         - When I [action], I would see/get [result]
         - The interaction would be: [step-by-step user flow]
-        - Example: "When I run `forge search docs`, I'd see matching results from Google Workspace"
+        - Example: "When I run `goblin search docs`, I'd see matching results from Google Workspace"
     validations:
       required: true
 

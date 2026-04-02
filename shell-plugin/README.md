@@ -1,10 +1,10 @@
-# Forge ZSH Plugin
+# Goblin ZSH Plugin
 
-A powerful ZSH plugin that provides intelligent command transformation, file tagging, and conversation management for the Forge AI assistant.
+A powerful ZSH plugin that provides intelligent command transformation, file tagging, and conversation management for the Goblin AI assistant.
 
 ## Features
 
-- **Smart Command Transformation**: Convert `:command` syntax into forge executions
+- **Smart Command Transformation**: Convert `:command` syntax into goblin executions
 - **Agent Selection**: Tab completion for available agents using `:agent_name`
 - **File Tagging**: Interactive file selection with `@[filename]` syntax
 - **Syntax Highlighting**: Visual feedback for commands and tagged files
@@ -17,7 +17,7 @@ Before using this plugin, ensure you have the following tools installed:
 
 - **fzf** - Command-line fuzzy finder
 - **fd** - Fast file finder (alternative to find)
-- **forge** - The Forge CLI tool
+- **goblin** - The Goblin CLI tool
 
 ### Installation of Prerequisites
 
@@ -42,7 +42,7 @@ Begin any command with `:` followed by your prompt:
 : Get the current time
 ```
 
-This automatically starts a new conversation with the default Forge agent.
+This automatically starts a new conversation with the default Goblin agent.
 
 ### Using Specific Agents
 
@@ -209,19 +209,19 @@ The plugin provides visual feedback through syntax highlighting:
 Customize the plugin behavior by setting these variables before loading the plugin:
 
 ```bash
-# Custom forge binary location
-export FORGE_BIN="/path/to/custom/forge"
+# Custom goblin binary location
+export GOBLIN_BIN="/path/to/custom/goblin"
 ```
 
 ### Available Configuration Variables
 
-- `FORGE_BIN`: Path to the forge executable (default: `forge`)
-- `FORGE_EDITOR`: Editor command to use for `:edit` command (default: `$EDITOR` or `nano`)
-- `FORGE_SYNC_ENABLED`: Enable/disable automatic workspace sync (default: `true`)
-- `FORGE_MAX_COMMIT_DIFF`: Maximum diff size for commit message generation in bytes (default: `100000`)
-- `FORGE_SKIP_INTERACTIVE`: Skip interactive prompts (internal use)
-- `FORGE_CURRENCY_SYMBOL`: Currency symbol for cost display in ZSH theme (default: `"$"`)
-- `FORGE_CURRENCY_CONVERSION_RATE`: Conversion rate for currency display (default: `1.0`)
+- `GOBLIN_BIN`: Path to the goblin executable (default: `goblin`)
+- `GOBLIN_EDITOR`: Editor command to use for `:edit` command (default: `$EDITOR` or `nano`)
+- `GOBLIN_SYNC_ENABLED`: Enable/disable automatic workspace sync (default: `true`)
+- `GOBLIN_MAX_COMMIT_DIFF`: Maximum diff size for commit message generation in bytes (default: `100000`)
+- `GOBLIN_SKIP_INTERACTIVE`: Skip interactive prompts (internal use)
+- `GOBLIN_CURRENCY_SYMBOL`: Currency symbol for cost display in ZSH theme (default: `"$"`)
+- `GOBLIN_CURRENCY_CONVERSION_RATE`: Conversion rate for currency display (default: `1.0`)
 - `NERD_FONT`: Enable Nerd Font icons in ZSH theme (default: auto-detected, set to `"1"` or `"true"` to enable, `"0"` or `"false"` to disable)
 - `USE_NERD_FONT`: Alternative variable for enabling Nerd Font icons (same behavior as `NERD_FONT`)
 - Internal pattern matching for conversation syntax (`:`)
@@ -239,7 +239,7 @@ This will index the current directory for semantic code search.
 
 ### Environment Diagnostics
 
-Run comprehensive environment diagnostics to check your Forge setup:
+Run comprehensive environment diagnostics to check your Goblin setup:
 
 ```bash
 :doctor
@@ -247,7 +247,7 @@ Run comprehensive environment diagnostics to check your Forge setup:
 
 This will check:
 - ZSH version and terminal information
-- Forge installation and version
+- Goblin installation and version
 - Plugin and theme loading status
 - Completions availability
 - Dependencies (fzf, fd, bat)
@@ -255,11 +255,11 @@ This will check:
 - Editor configuration and PATH setup
 - Nerd Font support for icons
 
-### .forge Directory
+### .goblin Directory
 
-The plugin creates a `.forge` directory in your current working directory (similar to `.git`) for temporary files:
+The plugin creates a `.goblin` directory in your current working directory (similar to `.git`) for temporary files:
 
-- `FORGE_EDITMSG.md`: Temporary file used when opening an external editor with `:edit`
+- `GOBLIN_EDITMSG.md`: Temporary file used when opening an external editor with `:edit`
 
 ## Advanced Features
 
@@ -267,14 +267,14 @@ The plugin creates a `.forge` directory in your current working directory (simil
 
 All transformed commands are properly saved to ZSH history, allowing you to:
 - Navigate command history with arrow keys
-- Search previous forge commands with `Ctrl+R`
+- Search previous goblin commands with `Ctrl+R`
 - Reuse complex commands with file tags
 
 ### Keyboard Shortcuts
 
 - **Tab**: Interactive completion for files (`@`) and agents (`:`)
 - **Enter**: Transform and execute `:commands`
-- **Ctrl+C**: Interrupt running forge commands
+- **Ctrl+C**: Interrupt running goblin commands
 
 ## Examples
 

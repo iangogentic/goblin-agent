@@ -50,7 +50,7 @@ body:
     id: models
     attributes:
       label: Available Models
-      description: List the models this provider offers that would be useful in Forge
+      description: List the models this provider offers that would be useful in Goblin
       placeholder: |
         - model-1 (description)
         - model-2 (description)
@@ -107,7 +107,7 @@ body:
     id: use-case
     attributes:
       label: Your Use Case
-      description: Why do you want to use this provider with Forge?
+      description: Why do you want to use this provider with Goblin?
       placeholder: I would use this provider because...
     validations:
       required: true

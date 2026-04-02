@@ -1,6 +1,6 @@
 # Semantic Search Tool Selection Evaluation
 
-This evaluation validates that the Forge agent correctly identifies and uses the `sem_search` (Codebase Search) tool when presented with conceptual, functionality-based code location queries.
+This evaluation validates that the Goblin agent correctly identifies and uses the `sem_search` (Codebase Search) tool when presented with conceptual, functionality-based code location queries.
 
 ## What We're Testing
 

@@ -1,7 +1,7 @@
 run:
-  - git clone --depth=1 --branch main https://github.com/antinomyhq/forge .
+  - git clone --depth=1 --branch main https://github.com/antinomyhq/goblin .
   - mkdir ../test-dir && cd ../test-dir
-  - FORGE_DEBUG_REQUESTS='{{dir}}/context.json' forgee --provider open_router --model {{model}} -p '{{task}}'
+  - GOBLIN_DEBUG_REQUESTS='{{dir}}/context.json' gobline --provider open_router --model {{model}} -p '{{task}}'
 parallelism: 5
 timeout: 120
 early_exit: false  # We want to see all cases, not just the first success
@@ -39,7 +39,7 @@ sources:
       - model: "z-ai/glm-4.6:exacto"
   - value:
       - task: "clean ~/tailcall"
-      - task: "format code in ~/task/crates/forge_domain"
+      - task: "format code in ~/task/crates/goblin_domain"
       - task: "install dependencies in ~/task/benchmarks"
       - task: "cd to ~/task/crates and run cargo test"
       - task: "go to ~/task/docs and list files"

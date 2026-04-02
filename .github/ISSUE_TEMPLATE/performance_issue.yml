@@ -13,7 +13,7 @@ body:
     attributes:
       label: Performance Issue Description
       description: Describe the performance problem you're experiencing
-      placeholder: Forge becomes slow when...
+      placeholder: Goblin becomes slow when...
     validations:
       required: true
 
@@ -90,13 +90,13 @@ body:
       label: Environment Details
       description: |
         Provide details about your environment:
-        - Forge version (`forge --version`)
+        - Goblin version (`goblin --version`)
         - Operating system and version
         - CPU, RAM
         - AI provider and model
         - Shell
       placeholder: |
-        - Forge: 0.1.0
+        - Goblin: 0.1.0
         - OS: macOS 14.1
         - CPU: M2 Pro
         - RAM: 16GB
@@ -110,7 +110,7 @@ body:
     id: config
     attributes:
       label: Configuration
-      description: Share relevant parts of your `forge.yaml` (remove sensitive data)
+      description: Share relevant parts of your `goblin.yaml` (remove sensitive data)
       render: yaml
 
   - type: textarea

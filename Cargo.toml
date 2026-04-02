@@ -135,27 +135,27 @@ async-openai = { version = "0.34.0", default-features = false, features = ["resp
 google-cloud-auth = "1.8.0" # Google Cloud authentication with automatic token refresh
 
 # Internal crates
-forge_embed = { path = "crates/forge_embed" }
-forge_api = { path = "crates/forge_api" }
-forge_app = { path = "crates/forge_app" }
-forge_ci = { path = "crates/forge_ci" }
-forge_display = { path = "crates/forge_display" }
-forge_domain = { path = "crates/forge_domain" }
-forge_fs = { path = "crates/forge_fs" }
-forge_infra = { path = "crates/forge_infra" }
-forge_repo = { path = "crates/forge_repo" }
-forge_main = { path = "crates/forge_main" }
-forge_services = { path = "crates/forge_services" }
-forge_snaps = { path = "crates/forge_snaps" }
-forge_spinner = { path = "crates/forge_spinner" }
-forge_stream = { path = "crates/forge_stream" }
-forge_template = { path = "crates/forge_template" }
-forge_tool_macros = { path = "crates/forge_tool_macros" }
-forge_tracker = { path = "crates/forge_tracker" }
-forge_walker = { path = "crates/forge_walker" }
-forge_json_repair = { path = "crates/forge_json_repair" }
-forge_select = { path = "crates/forge_select" }
-forge_test_kit = { path = "crates/forge_test_kit" }
+goblin_embed = { path = "crates/goblin_embed" }
+goblin_api = { path = "crates/goblin_api" }
+goblin_app = { path = "crates/goblin_app" }
+goblin_ci = { path = "crates/goblin_ci" }
+goblin_display = { path = "crates/goblin_display" }
+goblin_domain = { path = "crates/goblin_domain" }
+goblin_fs = { path = "crates/goblin_fs" }
+goblin_infra = { path = "crates/goblin_infra" }
+goblin_repo = { path = "crates/goblin_repo" }
+goblin_main = { path = "crates/goblin_main" }
+goblin_services = { path = "crates/goblin_services" }
+goblin_snaps = { path = "crates/goblin_snaps" }
+goblin_spinner = { path = "crates/goblin_spinner" }
+goblin_stream = { path = "crates/goblin_stream" }
+goblin_template = { path = "crates/goblin_template" }
+goblin_tool_macros = { path = "crates/goblin_tool_macros" }
+goblin_tracker = { path = "crates/goblin_tracker" }
+goblin_walker = { path = "crates/goblin_walker" }
+goblin_json_repair = { path = "crates/goblin_json_repair" }
+goblin_select = { path = "crates/goblin_select" }
+goblin_test_kit = { path = "crates/goblin_test_kit" }
 
-forge_markdown_stream = { path = "crates/forge_markdown_stream" }
-forge_config = { path = "crates/forge_config" }
+goblin_markdown_stream = { path = "crates/goblin_markdown_stream" }
+goblin_config = { path = "crates/goblin_config" }

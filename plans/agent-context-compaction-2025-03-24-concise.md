@@ -6,7 +6,7 @@ Add automatic context compaction to the `Agent` struct based on configurable tri
 ## Implementation Plan
 
 ### 1. Define New Compaction Configuration Structure
-Create a `Compaction` struct in `crates/forge_domain/src/agent.rs` with:
+Create a `Compaction` struct in `crates/goblin_domain/src/agent.rs` with:
 - `token_threshold`: Optional maximum token count trigger
 - `turn_threshold`: Optional maximum turns trigger
 - `message_threshold`: Optional maximum messages trigger
@@ -41,7 +41,7 @@ Add tests to verify:
 Update documentation with examples of the new configuration:
 
 ```yaml
-# Example in forge.yaml
+# Example in goblin.yaml
 agents:
   myAgent:
     id: myAgent

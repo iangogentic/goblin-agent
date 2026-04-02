@@ -1,5 +1,5 @@
 <system_information>
-{{> forge-partial-system-info.md }}
+{{> goblin-partial-system-info.md }}
 </system_information>
 
 {{#if (not tool_supported)}}
@@ -7,7 +7,7 @@
 {{tool_information}}</available_tools>
 
 <tool_usage_example>
-{{> forge-partial-tool-use-example.md }}
+{{> goblin-partial-tool-use-example.md }}
 </tool_usage_example>
 {{/if}}
 

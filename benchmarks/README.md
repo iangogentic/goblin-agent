@@ -1,22 +1,22 @@
-# Forge Code Evaluations
+# Goblin Code Evaluations
 
-A flexible evaluation framework for running automated tests and benchmarks against Forge Code commands.
+A flexible evaluation framework for running automated tests and benchmarks against Goblin Code commands.
 
 ## Quick Start
 
 ### Setup
 
-Before running evaluations, create a `forgee` symlink to the debug binary:
+Before running evaluations, create a `gobline` symlink to the debug binary:
 
 ```bash
 # Create symlink in your PATH (e.g., ~/bin or /usr/local/bin)
-ln -sf /path/to/code-forge/target/debug/forge ~/forgee
+ln -sf /path/to/code-goblin/target/debug/goblin ~/gobline
 
 # Or if ~/bin is in your PATH
-ln -sf $(pwd)/target/debug/forge ~/bin/forgee
+ln -sf $(pwd)/target/debug/goblin ~/bin/gobline
 ```
 
-**Why is this needed?** Tasks execute in temporary directories, so relative paths like `../../target/debug/forge` won't work. The `forgee` symlink provides a stable absolute path that works from any directory.
+**Why is this needed?** Tasks execute in temporary directories, so relative paths like `../../target/debug/goblin` won't work. The `gobline` symlink provides a stable absolute path that works from any directory.
 
 ### Running Evaluations
 
@@ -74,12 +74,12 @@ before_run:
 
 # Required: Command(s) to execute for each test case
 # Single command
-run: forgee -p '{{prompt}}'
+run: gobline -p '{{prompt}}'
 
 # Or multiple commands (executed sequentially)
 run:
   - echo "Step 1: {{task}}"
-  - forgee -p '{{prompt}}'
+  - gobline -p '{{prompt}}'
   - echo "Step 2: Complete"
 
 # Execution configuration
@@ -289,7 +289,7 @@ sources:
 
 1. **Use quotes in commands**: When passing CSV values with spaces, wrap them in quotes:
    ```yaml
-   command: forge -p '{{prompt}}'
+   command: goblin -p '{{prompt}}'
    ```
 
 2. **Build before running**: Use `before_run` to ensure binaries are up-to-date:

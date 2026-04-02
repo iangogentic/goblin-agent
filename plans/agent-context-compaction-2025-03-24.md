@@ -8,7 +8,7 @@ Add a new field to the `Agent` struct that enables automatic context compaction 
 
 ### 1. Define a New Context Compaction Configuration Structure
 
-Create a new struct `Compaction` in `crates/forge_domain/src/agent.rs` that will hold the configuration options for context compaction:
+Create a new struct `Compaction` in `crates/goblin_domain/src/agent.rs` that will hold the configuration options for context compaction:
 
 ```rust
 /// Configuration for automatic context compaction
@@ -82,7 +82,7 @@ impl Compaction {
 
 ### 2. Update the Agent Struct
 
-Add the new `compact` field to the `Agent` struct in `crates/forge_domain/src/agent.rs`:
+Add the new `compact` field to the `Agent` struct in `crates/goblin_domain/src/agent.rs`:
 
 ```rust
 #[derive(Debug, Clone, Serialize, Deserialize, Merge, Setters)]
@@ -102,7 +102,7 @@ pub struct Agent {
 
 ### 3. Implement Context Compaction Logic
 
-Modify the `Orchestrator` implementation in `crates/forge_domain/src/orch.rs` to apply context compaction automatically:
+Modify the `Orchestrator` implementation in `crates/goblin_domain/src/orch.rs` to apply context compaction automatically:
 
 ```rust
 impl<A: App> Orchestrator<A> {
@@ -151,7 +151,7 @@ impl<A: App> Orchestrator<A> {
 
 ### 4. Update the Summarize Implementation
 
-Enhance the `Summarize` implementation in `crates/forge_domain/src/summarize.rs` to better handle context compaction:
+Enhance the `Summarize` implementation in `crates/goblin_domain/src/summarize.rs` to better handle context compaction:
 
 ```rust
 // Add support for better summarization metrics
@@ -210,7 +210,7 @@ async fn execute_transform(
 
 ### 6. Add Tests
 
-Add new tests in `crates/forge_domain/src/agent.rs`:
+Add new tests in `crates/goblin_domain/src/agent.rs`:
 
 ```rust
 #[cfg(test)]
@@ -292,7 +292,7 @@ mod compact_tests {
 Add examples in documentation and configuration files:
 
 ```yaml
-# Example in forge.yaml
+# Example in goblin.yaml
 agents:
   myAgent:
     id: myAgent

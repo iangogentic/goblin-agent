@@ -8,12 +8,12 @@ Implement explicit conversation ID generation to enable multiple terminal sessio
 
 Based on codebase analysis, I found:
 
-1. **Current CLI Structure**: `--resume` flag exists in `crates/forge_main/src/cli.rs:64` and automatically loads the most recent conversation
-2. **Conversation ID Management**: `ConversationId` is a UUID-based type in `crates/forge_domain/src/conversation.rs:15` with `generate()` and `parse()` methods
-3. **Resume Logic**: Current `handle_resume()` in `crates/forge_main/src/ui.rs:265` uses `api.last_conversation()` to find the most recent conversation
-4. **Shell Plugin**: Current transformation in `shell-plugin/forge.plugin.zsh:18` uses `--resume` without parameters
+1. **Current CLI Structure**: `--resume` flag exists in `crates/goblin_main/src/cli.rs:64` and automatically loads the most recent conversation
+2. **Conversation ID Management**: `ConversationId` is a UUID-based type in `crates/goblin_domain/src/conversation.rs:15` with `generate()` and `parse()` methods
+3. **Resume Logic**: Current `handle_resume()` in `crates/goblin_main/src/ui.rs:265` uses `api.last_conversation()` to find the most recent conversation
+4. **Shell Plugin**: Current transformation in `shell-plugin/goblin.plugin.zsh:18` uses `--resume` without parameters
 5. **Database**: Repository has `get_conversation()` method for retrieving specific conversations by ID
-6. **Terminal Command**: Existing `TopLevelCommand::Term` in `crates/forge_main/src/cli.rs:100` handles terminal-related operations
+6. **Terminal Command**: Existing `TopLevelCommand::Term` in `crates/goblin_main/src/cli.rs:100` handles terminal-related operations
 
 ## Implementation Plan
 
@@ -59,15 +59,15 @@ Based on codebase analysis, I found:
 
 ### Phase 3: Shell Plugin Integration
 
-- [x] **Task 3.1: Create forge-term command for conversation ID generation**
-  - Add `forge-term` function to shell plugin for ID generation
+- [x] **Task 3.1: Create goblin-term command for conversation ID generation**
+  - Add `goblin-term` function to shell plugin for ID generation
   - Implement conversation ID storage in shell environment variables
   - Add user feedback and error handling for generation process
   - Rationale: Provides user-friendly interface for managing conversation IDs
 
 - [x] **Task 3.2: Update command transformation for explicit conversation IDs**
-  - Modify `??` commands to use `--resume --conversation-id $FORGE_CONVERSATION_ID`
-  - Modify `?` commands to use `--conversation-id $FORGE_CONVERSATION_ID` when available
+  - Modify `??` commands to use `--resume --conversation-id $GOBLIN_CONVERSATION_ID`
+  - Modify `?` commands to use `--conversation-id $GOBLIN_CONVERSATION_ID` when available
   - Add fallback behavior when no conversation ID is set
   - Rationale: Integrates new conversation ID management with existing shell workflow
 
@@ -127,10 +127,10 @@ Based on codebase analysis, I found:
 
 ## Verification Criteria
 
-- [x] **Criterion 1: Conversation ID Generation** `forge --generate-conversation-id` produces valid, unique conversation IDs
-- [x] **Criterion 2: Explicit Resume Functionality** `forge --resume --conversation-id <id>` successfully resumes the specified conversation
-- [x] **Criterion 3: Shell Integration** `forge-term generate-conversation-id` properly stores ID in shell environment
-- [x] **Criterion 4: Command Transformation** `?? text` transforms to `forge --resume --conversation-id <id> <<< text` when ID is available
+- [x] **Criterion 1: Conversation ID Generation** `goblin --generate-conversation-id` produces valid, unique conversation IDs
+- [x] **Criterion 2: Explicit Resume Functionality** `goblin --resume --conversation-id <id>` successfully resumes the specified conversation
+- [x] **Criterion 3: Shell Integration** `goblin-term generate-conversation-id` properly stores ID in shell environment
+- [x] **Criterion 4: Command Transformation** `?? text` transforms to `goblin --resume --conversation-id <id> <<< text` when ID is available
 - [x] **Criterion 5: Error Handling** Invalid conversation IDs produce clear error messages without crashing
 - [x] **Criterion 6: Backward Compatibility** Existing `--resume` behavior works with deprecation warnings during transition
 - [x] **Criterion 7: Multi-Terminal Isolation** Multiple terminals with different conversation IDs maintain separate conversation histories
@@ -144,7 +144,7 @@ Based on codebase analysis, I found:
    Mitigation: Use UUID-based generation which has extremely low collision probability; implement uniqueness validation when creating conversations
 
 3. **Shell Environment Variable Conflicts**
-   Mitigation: Use unique variable names (`FORGE_CONVERSATION_ID`); implement proper variable scoping; add validation for stored IDs
+   Mitigation: Use unique variable names (`GOBLIN_CONVERSATION_ID`); implement proper variable scoping; add validation for stored IDs
 
 4. **User Confusion with New Workflow**
    Mitigation: Provide clear documentation and examples; implement helpful error messages; add interactive guidance when possible
@@ -169,5 +169,5 @@ Based on codebase analysis, I found:
 4. **Hybrid Approach**: Support both explicit conversation IDs and automatic session management
    Trade-offs: More flexible, but significantly more complex implementation and maintenance
 
-5. **Separate Command Set**: Create new commands (`forge-resume`, `forge-new`) alongside existing ones
+5. **Separate Command Set**: Create new commands (`goblin-resume`, `goblin-new`) alongside existing ones
    Trade-offs: No breaking changes, but confusing user experience with multiple ways to do the same thing

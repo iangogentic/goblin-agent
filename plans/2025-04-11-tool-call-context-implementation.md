@@ -12,7 +12,7 @@ Add a required `ToolCallContext` parameter to the `ExecutableTool` trait's `call
    Complexity: Low
    Dependencies: None
 
-   Create a new struct in `forge_domain` (likely in a new file `tool_call_context.rs`) to represent the context passed to tool calls. Initially, this will be an empty struct with the infrastructure in place for future extension.
+   Create a new struct in `goblin_domain` (likely in a new file `tool_call_context.rs`) to represent the context passed to tool calls. Initially, this will be an empty struct with the infrastructure in place for future extension.
 2. Create a helper function for test contexts
    Priority: High
    Complexity: Low
@@ -24,8 +24,8 @@ Add a required `ToolCallContext` parameter to the `ExecutableTool` trait's `call
    Complexity: Low
    Dependencies: Step 1
 
-   Modify the trait definition in `crates/forge_domain/src/tool_definition.rs` to add the `ToolCallContext` parameter to the `call` method.
-4. Modify the `JsonTool` adapter in `forge_domain/src/tool.rs`
+   Modify the trait definition in `crates/goblin_domain/src/tool_definition.rs` to add the `ToolCallContext` parameter to the `call` method.
+4. Modify the `JsonTool` adapter in `goblin_domain/src/tool.rs`
    Priority: High
    Complexity: Low
    Dependencies: Step 3
@@ -36,18 +36,18 @@ Add a required `ToolCallContext` parameter to the `ExecutableTool` trait's `call
    Complexity: Medium
    Dependencies: Step 3
 
-   Update `crates/forge_services/src/tool_service.rs` to create and pass a `ToolCallContext` when calling tools.
+   Update `crates/goblin_services/src/tool_service.rs` to create and pass a `ToolCallContext` when calling tools.
 6. Update all tool implementations
    Priority: High
    Complexity: High
    Dependencies: Step 3
 
    Update all implementations of `ExecutableTool` across the codebase to accept the new `ToolCallContext` parameter:
-   * Shell tool (`crates/forge_services/src/tools/shell/shell_tool.rs`)
-   * Show user tool (`crates/forge_services/src/tools/show_user.rs`)
-   * File system tools (in `crates/forge_services/src/tools/fs/`)
-   * Patch tools (in `crates/forge_services/src/tools/patch/`)
-   * Fetch tool (`crates/forge_services/src/tools/fetch.rs`)
+   * Shell tool (`crates/goblin_services/src/tools/shell/shell_tool.rs`)
+   * Show user tool (`crates/goblin_services/src/tools/show_user.rs`)
+   * File system tools (in `crates/goblin_services/src/tools/fs/`)
+   * Patch tools (in `crates/goblin_services/src/tools/patch/`)
+   * Fetch tool (`crates/goblin_services/src/tools/fetch.rs`)
    * Other tools discovered during implementation
 7. Update test implementations with a systematic approach
    Priority: High

@@ -8,79 +8,79 @@ Implement support for reading extremely large text files by adding range paramet
 1. **Update `FsReadService` interface to support range reading**
    - Dependencies: None
    - Files: 
-     - `crates/forge_services/src/infra.rs`
+     - `crates/goblin_services/src/infra.rs`
    - Notes: Add a new method to the trait that accepts start and end positions
    - Status: Not Started
 
-2. **Implement the range reading functionality in `ForgeFileReadService`**
+2. **Implement the range reading functionality in `GoblinFileReadService`**
    - Dependencies: Task 1
    - Files: 
-     - `crates/forge_infra/src/fs_read.rs`
+     - `crates/goblin_infra/src/fs_read.rs`
    - Notes: Implement the new trait method using Tokio's file API for efficient reading
    - Status: Not Started
 
 3. **Add binary file detection and validation**
    - Dependencies: None
    - Files:
-     - `crates/forge_fs/src/lib.rs`
+     - `crates/goblin_fs/src/lib.rs`
    - Notes: Implement a utility function to detect if a file is binary and return an appropriate error
    - Status: Not Started
 
-4. **Update ForgeFS to support range reading with binary file validation**
+4. **Update GoblinFS to support range reading with binary file validation**
    - Dependencies: Tasks 2, 3
    - Files: 
-     - `crates/forge_fs/src/lib.rs`
+     - `crates/goblin_fs/src/lib.rs`
    - Notes: Add a new method for range-based file reading that rejects binary files
    - Status: Not Started
 
 5. **Implement UTF-8 boundary detection and correction**
    - Dependencies: Tasks 2, 4
    - Files:
-     - `crates/forge_fs/src/lib.rs`
+     - `crates/goblin_fs/src/lib.rs`
    - Notes: Ensure that range reads always align with UTF-8 character boundaries by adjusting the actual read range
    - Status: Not Started
 
 6. **Update the `FSReadInput` struct to include optional range parameters**
    - Dependencies: None
    - Files: 
-     - `crates/forge_services/src/tools/fs/fs_read.rs`
+     - `crates/goblin_services/src/tools/fs/fs_read.rs`
    - Notes: Add optional start_byte and end_byte fields to the input struct
    - Status: Not Started
 
 7. **Modify FSRead tool implementation to support range reading and reject binary files**
    - Dependencies: Tasks 1, 2, 3, 4, 5, 6
    - Files: 
-     - `crates/forge_services/src/tools/fs/fs_read.rs`
+     - `crates/goblin_services/src/tools/fs/fs_read.rs`
    - Notes: Update the `call` method to use the range-based reading with UTF-8 boundary adjustment and ensure binary files are rejected
    - Status: Not Started
 
 8. **Update the FSRead tool description**
    - Dependencies: Task 6
    - Files: 
-     - `crates/forge_services/src/tools/fs/fs_read.rs`
+     - `crates/goblin_services/src/tools/fs/fs_read.rs`
    - Notes: Update docstring to include range parameters in the tool description and explicitly mention that binary files are not supported and UTF-8 boundaries are always respected
    - Status: Not Started
 
 9. **Implement file size detection logic**
    - Dependencies: None
    - Files:
-     - `crates/forge_fs/src/lib.rs`
+     - `crates/goblin_fs/src/lib.rs`
    - Notes: Add functionality to efficiently determine file size without reading the entire file
    - Status: Not Started
 
 10. **Add content length information to range read responses**
     - Dependencies: Task 9
     - Files:
-      - `crates/forge_services/src/tools/fs/fs_read.rs`
+      - `crates/goblin_services/src/tools/fs/fs_read.rs`
     - Notes: Include total file size and adjusted range information in the response to help users understand the context of the range
     - Status: Not Started
 
 11. **Add unit tests for range-based file reading and binary file rejection**
     - Dependencies: Tasks 1-10
     - Files: 
-      - `crates/forge_services/src/tools/fs/fs_read.rs`
-      - `crates/forge_infra/src/fs_read.rs`
-      - `crates/forge_fs/src/lib.rs`
+      - `crates/goblin_services/src/tools/fs/fs_read.rs`
+      - `crates/goblin_infra/src/fs_read.rs`
+      - `crates/goblin_fs/src/lib.rs`
     - Notes: Test different range scenarios, edge cases, binary file detection, UTF-8 boundary handling, and error conditions
     - Status: Not Started
 

@@ -8,54 +8,54 @@ Create a new AppConfigRepository following the established repository pattern in
 
 ### Phase 1: Repository Pattern Implementation
 
-- [x] **Create AppConfigRepository trait in forge_services/src/infra.rs**
+- [x] **Create AppConfigRepository trait in goblin_services/src/infra.rs**
   - Define async methods for CRUD operations on AppConfig
   - Follow the same pattern as ConversationRepository
   - Include methods: get_app_config() -> Option<AppConfig>, set_app_config(config: &AppConfig) -> anyhow::Result<()>
 
-- [x] **Create AppConfigRepositoryImpl in forge_infra crate**
-  - Create new file: crates/forge_infra/src/database/repository/app_config.rs
+- [x] **Create AppConfigRepositoryImpl in goblin_infra crate**
+  - Create new file: crates/goblin_infra/src/database/repository/app_config.rs
   - Implement the AppConfigRepository trait
-  - Handle file-based storage operations similar to current ForgeConfigService
+  - Handle file-based storage operations similar to current GoblinConfigService
   - Include comprehensive tests following the project's testing patterns
 
-- [x] **Update forge_infra/src/database/mod.rs**
+- [x] **Update goblin_infra/src/database/mod.rs**
   - Add module declaration for app_config repository
   - Export the new AppConfigRepositoryImpl
 
-- [x] **Update ForgeInfra struct**
-  - Add app_config_repository field to ForgeInfra in crates/forge_infra/src/forge_infra.rs
+- [x] **Update GoblinInfra struct**
+  - Add app_config_repository field to GoblinInfra in crates/goblin_infra/src/goblin_infra.rs
   - Initialize the repository in the constructor
-  - Implement AppConfigRepository trait for ForgeInfra by delegating to the repository
+  - Implement AppConfigRepository trait for GoblinInfra by delegating to the repository
 
 ### Phase 2: Service Layer Updates
 
-- [x] **Update ForgeConfigService implementation**
-  - Modify crates/forge_services/src/app_config.rs to use AppConfigRepository instead of direct file operations
+- [x] **Update GoblinConfigService implementation**
+  - Modify crates/goblin_services/src/app_config.rs to use AppConfigRepository instead of direct file operations
   - Replace direct file read/write with repository method calls
   - Maintain the same AppConfigService interface for backward compatibility
 
 - [x] **Update Services trait integration**
-  - Add AppConfigRepository associated type to the Services trait in crates/forge_app/src/services.rs
+  - Add AppConfigRepository associated type to the Services trait in crates/goblin_app/src/services.rs
   - Add app_config_repository() method to Services trait
-  - Update the trait implementation in forge_services to return the repository
+  - Update the trait implementation in goblin_services to return the repository
 
 ### Phase 3: Direct Usage Migration
 
 - [x] **Update Authenticator class**
-  - Modify crates/forge_app/src/authenticator.rs to use AppConfigRepository through the services layer
+  - Modify crates/goblin_app/src/authenticator.rs to use AppConfigRepository through the services layer
   - Replace direct AppConfigService calls with repository-based operations
 
-- [x] **Update forge_api implementations**
-  - Modify crates/forge_api/src/forge_api.rs and crates/forge_api/src/api.rs
+- [x] **Update goblin_api implementations**
+  - Modify crates/goblin_api/src/goblin_api.rs and crates/goblin_api/src/api.rs
   - Ensure API layer uses the updated service layer with repository pattern
 
 - [x] **Update UI components**
-  - Modify crates/forge_main/src/ui.rs to use the updated service layer
+  - Modify crates/goblin_main/src/ui.rs to use the updated service layer
   - Ensure no direct AppConfig instantiation remains
 
 - [x] **Update authentication service**
-  - Modify crates/forge_services/src/auth.rs to use repository pattern
+  - Modify crates/goblin_services/src/auth.rs to use repository pattern
   - Ensure LoginInfo and InitAuth operations work with the new pattern
 
 ### Phase 4: Testing and Verification
@@ -76,7 +76,7 @@ Create a new AppConfigRepository following the established repository pattern in
 ### Phase 5: Documentation and Cleanup
 
 - [x] **Remove deprecated direct usage**
-  - Remove any remaining direct file operations in ForgeConfigService
+  - Remove any remaining direct file operations in GoblinConfigService
   - Ensure all AppConfig operations go through the repository
 
 - [x] **Add documentation**
@@ -102,7 +102,7 @@ Create a new AppConfigRepository following the established repository pattern in
    Mitigation: Maintain the AppConfigService interface and gradually migrate internal implementations while preserving public APIs
 
 2. **File System Access Complexity**
-   Mitigation: Reuse existing file infrastructure patterns from ForgeConfigService and follow the same error handling approach
+   Mitigation: Reuse existing file infrastructure patterns from GoblinConfigService and follow the same error handling approach
 
 3. **Testing Integration Points**
    Mitigation: Create mock implementations for testing and follow the established testing patterns used for ConversationRepository

@@ -1,7 +1,7 @@
 You are a shell command generator that transforms user intent into valid executable commands.
 
 <system_information>
-{{> forge-partial-system-info.md }}
+{{> goblin-partial-system-info.md }}
 </system_information>
 
 # Core Rules

@@ -14,7 +14,7 @@ SKIPPED=0
 
 # Test 1: Good implementation queries - should PASS
 echo "Test 1: Good implementation queries..."
-if cd /Users/amit/code-forge/benchmarks/evals/semantic_search_quality && \
+if cd /Users/amit/code-goblin/benchmarks/evals/semantic_search_quality && \
    ./run_eval.sh /tmp/test_semantic_eval/full_context.json > /dev/null 2>&1; then
   echo "  ✓ PASSED (score >= 70)"
   PASSED=$((PASSED + 1))
@@ -25,7 +25,7 @@ fi
 
 # Test 2: Documentation queries - should PASS (may be marginal)
 echo "Test 2: Documentation queries..."
-if cd /Users/amit/code-forge/benchmarks/evals/semantic_search_quality && \
+if cd /Users/amit/code-goblin/benchmarks/evals/semantic_search_quality && \
    ./run_eval.sh /tmp/test_semantic_eval/doc_context.json > /dev/null 2>&1; then
   echo "  ✓ PASSED (score >= 70)"
   PASSED=$((PASSED + 1))
@@ -36,7 +36,7 @@ fi
 
 # Test 3: Bad queries - should FAIL
 echo "Test 3: Bad queries (generic keywords)..."
-if cd /Users/amit/code-forge/benchmarks/evals/semantic_search_quality && \
+if cd /Users/amit/code-goblin/benchmarks/evals/semantic_search_quality && \
    ./run_eval.sh /tmp/test_semantic_eval/bad_context.json > /dev/null 2>&1; then
   echo "  ✗ FAILED (expected failure, got pass)"
   FAILED=$((FAILED + 1))
@@ -47,7 +47,7 @@ fi
 
 # Test 4: Missing sem_search - should FAIL early
 echo "Test 4: Missing sem_search tool..."
-if cd /Users/amit/code-forge/benchmarks/evals/semantic_search_quality && \
+if cd /Users/amit/code-goblin/benchmarks/evals/semantic_search_quality && \
    ./run_eval.sh /tmp/test_semantic_eval/no_sem_search_context.json > /dev/null 2>&1; then
   echo "  ✗ FAILED (expected early exit failure)"
   FAILED=$((FAILED + 1))

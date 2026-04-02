@@ -2,7 +2,7 @@
 
 ## Objective
 
-Modify the context compaction logic in `crates/forge_domain/src/compaction.rs` to identify and compress only one continuous sequence of assistant messages at a time, rather than processing all sequences at once or compressing the entire context.
+Modify the context compaction logic in `crates/goblin_domain/src/compaction.rs` to identify and compress only one continuous sequence of assistant messages at a time, rather than processing all sequences at once or compressing the entire context.
 
 ## Current Implementation Analysis
 

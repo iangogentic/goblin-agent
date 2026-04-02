@@ -1,8 +1,8 @@
-# FORGE_DUMP_AUTO_OPEN Environment Variable Implementation Plan v2
+# GOBLIN_DUMP_AUTO_OPEN Environment Variable Implementation Plan v2
 
 ## Objective
 
-Implement environment variable control for the auto-open functionality of HTML dumps in the Forge CLI by integrating the `FORGE_DUMP_AUTO_OPEN` environment variable directly into the Environment service. The feature will be accessible via `self.api.environment().auto_open_dump` and should default to `false` (disabled) and only auto-open when explicitly set to `true` or `1`.
+Implement environment variable control for the auto-open functionality of HTML dumps in the Goblin CLI by integrating the `GOBLIN_DUMP_AUTO_OPEN` environment variable directly into the Environment service. The feature will be accessible via `self.api.environment().auto_open_dump` and should default to `false` (disabled) and only auto-open when explicitly set to `true` or `1`.
 
 ## Background Analysis
 
@@ -15,12 +15,12 @@ Based on the GitHub issue (#1201) analysis and updated requirements:
 
 ## Architecture Assessment
 
-**Current Implementation Location**: `crates/forge_main/src/ui.rs:721-740`
+**Current Implementation Location**: `crates/goblin_main/src/ui.rs:721-740`
 
 **Environment Service Architecture**: The codebase uses a layered service architecture:
-- `Environment` struct in `crates/forge_domain/src/env.rs:18` contains configuration fields
-- `EnvironmentInfra` trait in `crates/forge_infra/src/env.rs:107-108` handles environment variable access
-- Environment variables are parsed during initialization in `crates/forge_infra/src/env.rs:39-71`
+- `Environment` struct in `crates/goblin_domain/src/env.rs:18` contains configuration fields
+- `EnvironmentInfra` trait in `crates/goblin_infra/src/env.rs:107-108` handles environment variable access
+- Environment variables are parsed during initialization in `crates/goblin_infra/src/env.rs:39-71`
 - API access pattern: `self.api.environment()` provides access to Environment struct
 
 **Access Pattern**: The desired `self.api.environment().auto_open_dump` pattern requires adding the field to the Environment struct and parsing logic to the infrastructure layer.
@@ -28,19 +28,19 @@ Based on the GitHub issue (#1201) analysis and updated requirements:
 ## Implementation Plan
 
 - [x] **Task 1: Add auto_open_dump field to Environment struct**
-  - Location: `crates/forge_domain/src/env.rs:54` (add field after existing configuration fields)
+  - Location: `crates/goblin_domain/src/env.rs:54` (add field after existing configuration fields)
   - Add `pub auto_open_dump: bool` field to Environment struct
   - Ensure field is included in builder pattern via existing `derive_setters::Setters`
 
 - [x] **Task 2: Add environment variable parsing in infrastructure layer**
-  - Location: `crates/forge_infra/src/env.rs:39-71` (in the `get()` method)
-  - Parse `FORGE_DUMP_AUTO_OPEN` environment variable using existing `parse_env` helper
+  - Location: `crates/goblin_infra/src/env.rs:39-71` (in the `get()` method)
+  - Parse `GOBLIN_DUMP_AUTO_OPEN` environment variable using existing `parse_env` helper
   - Support boolean values: "true", "1", "yes" (case-insensitive) for enabled; everything else disabled
   - Default to `false` when variable is not set (maintains backward compatibility for new users)
   - Follow existing patterns similar to other boolean environment variables in the codebase
 
 - [x] **Task 3: Update UI dump method to use Environment service**
-  - Location: `crates/forge_main/src/ui.rs:721-740`
+  - Location: `crates/goblin_main/src/ui.rs:721-740`
   - Replace direct `open::that()` call with conditional logic
   - Use `self.api.environment().auto_open_dump` to determine if auto-open should occur
   - Maintain existing behavior when auto-open is enabled
@@ -57,7 +57,7 @@ Based on the GitHub issue (#1201) analysis and updated requirements:
   - Document supported values and expected behavior
 
 - [x] **Task 6: Create comprehensive test coverage**
-  - Location: `crates/forge_infra/src/env.rs:269-511` (following existing test patterns)
+  - Location: `crates/goblin_infra/src/env.rs:269-511` (following existing test patterns)
   - Unit tests for environment variable parsing logic using `serial_test::serial`
   - Test default behavior (disabled when not set)
   - Test enabled behavior (when set to truthy values: "true", "1", "yes")
@@ -72,7 +72,7 @@ Based on the GitHub issue (#1201) analysis and updated requirements:
 
 ## Verification Criteria
 
-- Environment variable `FORGE_DUMP_AUTO_OPEN` is integrated into Environment service
+- Environment variable `GOBLIN_DUMP_AUTO_OPEN` is integrated into Environment service
 - Accessible via `self.api.environment().auto_open_dump` pattern
 - Default behavior (when unset) is to NOT auto-open (false)
 - Setting to "true", "1", or "yes" (case-insensitive) enables auto-open
@@ -112,14 +112,14 @@ Based on the GitHub issue (#1201) analysis and updated requirements:
    - Trade-offs: More encapsulated but doesn't provide the direct property access pattern requested
 
 3. **Workflow-level Configuration**
-   - Alternative: Add configuration to forge.yaml workflow files
+   - Alternative: Add configuration to goblin.yaml workflow files
    - Trade-offs: More discoverable but less flexible than environment variable approach
 
 ## Technical Implementation Details
 
 **Environment Struct Field Addition:**
 ```rust
-// In crates/forge_domain/src/env.rs
+// In crates/goblin_domain/src/env.rs
 #[derive(Clone, Debug, Setters)]
 pub struct Environment {
     // existing fields...
@@ -129,8 +129,8 @@ pub struct Environment {
 
 **Environment Variable Parsing:**
 ```rust
-// In crates/forge_infra/src/env.rs get() method
-let auto_open_dump = parse_env::<bool>("FORGE_DUMP_AUTO_OPEN").unwrap_or(false);
+// In crates/goblin_infra/src/env.rs get() method
+let auto_open_dump = parse_env::<bool>("GOBLIN_DUMP_AUTO_OPEN").unwrap_or(false);
 
 Environment {
     // existing field assignments...
@@ -140,7 +140,7 @@ Environment {
 
 **UI Integration:**
 ```rust
-// In crates/forge_main/src/ui.rs dump methods
+// In crates/goblin_main/src/ui.rs dump methods
 if self.api.environment().auto_open_dump {
     open::that(path.as_str()).ok();
 } else {
@@ -157,11 +157,11 @@ Configuring the tool calls settings:
 
 ```bash
 # .env
-FORGE_TOOL_TIMEOUT=300         # Maximum execution time in seconds for a tool (default: 300)
-FORGE_DUMP_AUTO_OPEN=false     # Automatically open dump files in browser (default: false)
+GOBLIN_TOOL_TIMEOUT=300         # Maximum execution time in seconds for a tool (default: 300)
+GOBLIN_DUMP_AUTO_OPEN=false     # Automatically open dump files in browser (default: false)
 ```
 
 </details>
 ```
 
-This plan follows established architectural patterns in the Forge codebase while providing the requested `self.api.environment().auto_open_dump` access pattern and comprehensive documentation.
+This plan follows established architectural patterns in the Goblin codebase while providing the requested `self.api.environment().auto_open_dump` access pattern and comprehensive documentation.

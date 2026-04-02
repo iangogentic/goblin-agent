@@ -14,7 +14,7 @@ The current implementation renders the system context only once during agent ini
 
 ### 1. Update TemplateService Trait
 
-Modify the `TemplateService` trait in `crates/forge_domain/src/services.rs` to include variables in the `render_system` method signature:
+Modify the `TemplateService` trait in `crates/goblin_domain/src/services.rs` to include variables in the `render_system` method signature:
 
 ```rust
 async fn render_system(
@@ -25,9 +25,9 @@ async fn render_system(
 ) -> anyhow::Result<String>;
 ```
 
-### 2. Modify ForgeTemplateService Implementation
+### 2. Modify GoblinTemplateService Implementation
 
-Update the implementation in `crates/forge_services/src/template.rs` to handle variables in system context rendering:
+Update the implementation in `crates/goblin_services/src/template.rs` to handle variables in system context rendering:
 
 ```rust
 async fn render_system(
@@ -79,7 +79,7 @@ async fn render_system(
 
 ### 3. Update SystemContext Struct
 
-Modify the `SystemContext` struct in `crates/forge_domain/src/system_context.rs` to include variables:
+Modify the `SystemContext` struct in `crates/goblin_domain/src/system_context.rs` to include variables:
 
 ```rust
 #[derive(Debug, Setters, Clone, Serialize, Deserialize)]
@@ -135,7 +135,7 @@ impl Default for SystemContext {
 
 ### 4. Update Orchestrator to Re-render System Context
 
-Modify the orchestrator's conversation loop in `crates/forge_domain/src/orch.rs` to re-render the system context on each iteration:
+Modify the orchestrator's conversation loop in `crates/goblin_domain/src/orch.rs` to re-render the system context on each iteration:
 
 ```rust
 async fn init_agent(&self, agent_id: &AgentId, event: &Event) -> anyhow::Result<()> {
@@ -266,7 +266,7 @@ async fn init_agent(&self, agent_id: &AgentId, event: &Event) -> anyhow::Result<
 Add tests for the updated `render_system` method with variables:
 
 ```rust
-// In forge_services/src/template.rs or a test file
+// In goblin_services/src/template.rs or a test file
 #[tokio::test]
 async fn test_render_system_with_variables() {
     // Create a test agent
@@ -290,7 +290,7 @@ async fn test_render_system_with_variables() {
 
 ### 6. Update init_agent_context Method
 
-Also need to update the `init_agent_context` method in `crates/forge_domain/src/orch.rs` to pass empty variables:
+Also need to update the `init_agent_context` method in `crates/goblin_domain/src/orch.rs` to pass empty variables:
 
 ```rust
 async fn init_agent_context(&self, agent: &Agent) -> anyhow::Result<Context> {

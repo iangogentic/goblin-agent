@@ -10,26 +10,26 @@ Implement dynamic registration of agent-specific slash commands that automatical
    
    **Rationale**: Extend the existing Command enum with a new variant for direct agent switching, following the pattern of other command variants like Custom(PartialEvent).
    
-   - Add `AgentSwitch(String)` variant to `Command` enum in `crates/forge_main/src/model.rs:221`
-   - Add corresponding name() method case at `crates/forge_main/src/model.rs:325`
+   - Add `AgentSwitch(String)` variant to `Command` enum in `crates/goblin_main/src/model.rs:221`
+   - Add corresponding name() method case at `crates/goblin_main/src/model.rs:325`
    - Add usage description using the strum property pattern similar to existing commands
    - Update command parsing logic to route agent-specific commands to this variant
 
-- [x] **Task 2. Extend ForgeCommandManager with Agent Command Registration**
+- [x] **Task 2. Extend GoblinCommandManager with Agent Command Registration**
    
    **Rationale**: Follow the existing pattern used by `register_all()` method for workflow commands, but create a separate method for agent-based dynamic commands to maintain separation of concerns.
    
-   - Add `register_agent_commands(&self, agents: Vec<Agent>)` method to `ForgeCommandManager` at `crates/forge_main/src/model.rs:63`
+   - Add `register_agent_commands(&self, agents: Vec<Agent>)` method to `GoblinCommandManager` at `crates/goblin_main/src/model.rs:63`
    - Implement agent ID sanitization for valid command names (replace special chars, handle spaces)
-   - Generate `ForgeCommand` objects with pattern `/agent-{sanitized_id}` following workflow command format
+   - Generate `GoblinCommand` objects with pattern `/agent-{sanitized_id}` following workflow command format
    - Add agent-specific description format like "🤖 Switch to {title} agent" 
    - Store agent ID in the `value` field for later retrieval during parsing
 
-- [x] **Task 3. Update ForgeCommandManager Command Parsing**
+- [x] **Task 3. Update GoblinCommandManager Command Parsing**
    
    **Rationale**: Extend the existing parsing logic in the `parse()` method to detect and handle agent-specific command patterns, similar to how workflow custom commands are handled.
    
-   - Extend the `parse()` method fallback logic at `crates/forge_main/src/model.rs:192` to check for agent commands
+   - Extend the `parse()` method fallback logic at `crates/goblin_main/src/model.rs:192` to check for agent commands
    - Detect commands matching `/agent-*` pattern before falling back to custom commands
    - Extract agent ID from command names by removing `/agent-` prefix
    - Return `Command::AgentSwitch(agent_id)` for valid agent commands
@@ -39,7 +39,7 @@ Implement dynamic registration of agent-specific slash commands that automatical
    
    **Rationale**: Agent commands must be registered during UI initialization right after workflow commands, ensuring they are available throughout the session.
    
-   - Modify `init_state()` method in `crates/forge_main/src/ui.rs:700` to register agent commands
+   - Modify `init_state()` method in `crates/goblin_main/src/ui.rs:700` to register agent commands
    - Load agents using existing `self.api.get_agents().await?` after line 720
    - Call `self.command.register_agent_commands(agents)` after workflow registration
    - Add error handling that logs warnings for agent loading failures without breaking initialization
@@ -49,7 +49,7 @@ Implement dynamic registration of agent-specific slash commands that automatical
    
    **Rationale**: Create a streamlined handler for direct agent switching in the main UI command processing loop, reusing existing agent switching logic for consistency.
    
-   - Add handler for `Command::AgentSwitch(agent_id)` in the UI command processing loop (around `crates/forge_main/src/ui.rs`)
+   - Add handler for `Command::AgentSwitch(agent_id)` in the UI command processing loop (around `crates/goblin_main/src/ui.rs`)
    - Validate that the requested agent exists by checking against loaded agents
    - Reuse existing `on_agent_change()` logic for the actual switch operation
    - Provide user feedback for successful switches using existing notification patterns
@@ -62,14 +62,14 @@ Implement dynamic registration of agent-specific slash commands that automatical
    - Create helper function to sanitize agent IDs for command names
    - Convert spaces and special characters to hyphens or underscores
    - Handle edge cases like empty IDs, numeric-only IDs, or very long IDs
-   - Validate against existing built-in command names (`/agent`, `/forge`, `/muse`, etc.)
+   - Validate against existing built-in command names (`/agent`, `/goblin`, `/muse`, etc.)
    - Provide deterministic fallback naming for problematic agent IDs
 
 - [x] **Task 7. Update register_all Method to Handle Combined Registration**
    
    **Rationale**: Ensure the existing workflow command registration doesn't interfere with agent commands and that both can coexist in the command registry.
    
-   - Modify `register_all()` method at `crates/forge_main/src/model.rs:78` to preserve existing agent commands
+   - Modify `register_all()` method at `crates/goblin_main/src/model.rs:78` to preserve existing agent commands
    - Ensure agent commands are not overwritten when workflow commands are re-registered
    - Maintain proper sorting of all commands (workflow + agent) for consistent completion behavior
    - Add logic to clear only workflow-related commands while preserving agent commands
@@ -98,7 +98,7 @@ Implement dynamic registration of agent-specific slash commands that automatical
 ## Potential Risks and Mitigations
 
 ### **Risk: Command Name Collisions with Built-in Commands**
-**Impact**: Agent IDs might conflict with existing built-in commands like `/agent`, `/forge`, `/muse`
+**Impact**: Agent IDs might conflict with existing built-in commands like `/agent`, `/goblin`, `/muse`
 **Mitigation**: 
 - Use consistent `/agent-{id}` prefixing to avoid conflicts with built-in commands
 - Implement validation to check against all existing command names during registration
@@ -108,7 +108,7 @@ Implement dynamic registration of agent-specific slash commands that automatical
 **Impact**: Loading agents during UI initialization could slow startup
 **Mitigation**:
 - Agent loading already happens during UI initialization for other purposes
-- Agent command registration is a lightweight operation that just creates ForgeCommand objects
+- Agent command registration is a lightweight operation that just creates GoblinCommand objects
 - Implement timeout and graceful degradation if agent loading takes too long
 
 ### **Risk: Command Registry State Consistency**

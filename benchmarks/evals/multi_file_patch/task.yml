@@ -1,7 +1,7 @@
 run:
   # Clone into `tmp/task` dir
-  - git clone --depth=1 --branch main https://github.com/antinomyhq/forge .
-  - FORGE_DEBUG_REQUESTS='{{dir}}/context.json' forgee --provider open_router --model {{model}} -p '{{task}}'
+  - git clone --depth=1 --branch main https://github.com/antinomyhq/goblin .
+  - GOBLIN_DEBUG_REQUESTS='{{dir}}/context.json' gobline --provider open_router --model {{model}} -p '{{task}}'
 parallelism: 50
 timeout: 120
 early_exit: true
