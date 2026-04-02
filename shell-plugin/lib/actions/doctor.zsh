@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 
-# Doctor action handler for forge environment diagnostics
+# Doctor action handler for Goblin environment diagnostics
 
-# Action handler: Run forge environment diagnostics
-# Executes the forge binary's zsh doctor command
-function _forge_action_doctor() {
+# Action handler: Run Goblin environment diagnostics
+# Executes the Goblin binary's zsh doctor command
+function _Goblin_action_doctor() {
     echo
     
-    # Execute forge zsh doctor command
-    $_FORGE_BIN zsh doctor
+    # Execute Goblin zsh doctor command
+    $_GOBLIN_BIN zsh doctor
 }

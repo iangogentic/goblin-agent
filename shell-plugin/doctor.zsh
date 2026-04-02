@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# ZSH Doctor - Diagnostic tool for Forge shell environment
+# ZSH Doctor - Diagnostic tool for Goblin shell environment
 # Checks for common configuration issues and environment setup
 
 # Source user's .zshrc to get their environment (suppress errors from non-interactive mode)
@@ -74,7 +74,7 @@ function print_result() {
     esac
 }
 
-echo "$(bold "FORGE ENVIRONMENT DIAGNOSTICS")"
+echo "$(bold "GOBLIN ENVIRONMENT DIAGNOSTICS")"
 
 # 1. Check ZSH version
 print_section "Shell Environment"
@@ -123,57 +123,57 @@ else
     print_result warn "Oh My Zsh not found" "Install: sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
 fi
 
-# 2. Check if forge is installed and in PATH
-print_section "Forge Installation"
+# 2. Check if goblin is installed and in PATH
+print_section "Goblin Installation"
 
-# Check if forge is in PATH
-if command -v forge &> /dev/null; then
-    local forge_path=$(command -v forge)
+# Check if goblin is in PATH
+if command -v goblin &> /dev/null; then
+    local goblin_path=$(command -v goblin)
     
-    # Get forge version and extract just the version number
-    local forge_version=$(forge --version 2>&1 | head -n1 | awk '{print $2}')
-    if [[ -n "$forge_version" ]]; then
-        print_result pass "forge: ${forge_version}"
-        print_result info "${forge_path}"
+    # Get goblin version and extract just the version number
+    local goblin_version=$(goblin --version 2>&1 | head -n1 | awk '{print $2}')
+    if [[ -n "$goblin_version" ]]; then
+        print_result pass "goblin: ${goblin_version}"
+        print_result info "${goblin_path}"
     else
-        print_result pass "forge: installed"
-        print_result info "${forge_path}"
+        print_result pass "goblin: installed"
+        print_result info "${goblin_path}"
     fi
 else
-    print_result fail "Forge binary not found in PATH" "Installation: curl -fsSL https://forgecode.dev/cli | sh"
+    print_result fail "Goblin binary not found in PATH" "Installation: curl -fsSL https://goblincode.dev/cli | sh"
 fi
 
 # 3. Check shell plugin
 print_section "Plugin"
 
-# Check if forge plugin is loaded by checking environment variable
-if [[ -n "$_FORGE_PLUGIN_LOADED" ]]; then
-    print_result pass "Forge plugin loaded"
+# Check if goblin plugin is loaded by checking environment variable
+if [[ -n "$_GOBLIN_PLUGIN_LOADED" ]]; then
+    print_result pass "Goblin plugin loaded"
 else
-    print_result fail "Forge plugin not loaded"
+    print_result fail "Goblin plugin not loaded"
     print_result instruction "Add to your ~/.zshrc:"
-    print_result code "eval \"\$(forge zsh plugin)\""
-    print_result instruction "Or run: forge zsh setup"
+    print_result code "eval \"\$(goblin zsh plugin)\""
+    print_result instruction "Or run: goblin zsh setup"
 fi
 
 
 # Check plugin loading order in .zshrc
 local zshrc_file="${ZDOTDIR:-$HOME}/.zshrc"
-if [[ -f "$zshrc_file" ]] && [[ -n "$_FORGE_PLUGIN_LOADED" ]]; then
-    # Extract line numbers for plugin declarations and forge plugin eval
+if [[ -f "$zshrc_file" ]] && [[ -n "$_GOBLIN_PLUGIN_LOADED" ]]; then
+    # Extract line numbers for plugin declarations and goblin plugin eval
     local plugins_line=$(grep -n "^[[:space:]]*plugins=(" "$zshrc_file" 2>/dev/null | head -n1 | cut -d: -f1)
-    local forge_plugin_line=$(grep -n "eval.*forge.*zsh plugin" "$zshrc_file" 2>/dev/null | head -n1 | cut -d: -f1)
+    local goblin_plugin_line=$(grep -n "eval.*goblin.*zsh plugin" "$zshrc_file" 2>/dev/null | head -n1 | cut -d: -f1)
 
-    if [[ -n "$plugins_line" ]] && [[ -n "$forge_plugin_line" ]]; then
-        if [[ $forge_plugin_line -lt $plugins_line ]]; then
+    if [[ -n "$plugins_line" ]] && [[ -n "$goblin_plugin_line" ]]; then
+        if [[ $goblin_plugin_line -lt $plugins_line ]]; then
             print_result fail "Plugin loading order incorrect"
-            print_result instruction "Forge plugin (line ${forge_plugin_line}) should be loaded AFTER plugins=() (line ${plugins_line})"
-            print_result instruction "Move the forge plugin eval statement after the plugins=() array in ~/.zshrc"
+            print_result instruction "Goblin plugin (line ${goblin_plugin_line}) should be loaded AFTER plugins=() (line ${plugins_line})"
+            print_result instruction "Move the goblin plugin eval statement after the plugins=() array in ~/.zshrc"
         else
             print_result pass "Plugin loading order correct"
         fi
-    elif [[ -n "$forge_plugin_line" ]] && [[ -z "$plugins_line" ]]; then
-        # Forge plugin found but no plugins=() array - check for individual plugin sources
+    elif [[ -n "$goblin_plugin_line" ]] && [[ -z "$plugins_line" ]]; then
+        # Goblin plugin found but no plugins=() array - check for individual plugin sources
         local has_other_plugins=false
         if grep -q "source.*zsh-autosuggestions" "$zshrc_file" 2>/dev/null || \
            grep -q "source.*zsh-syntax-highlighting" "$zshrc_file" 2>/dev/null; then
@@ -182,27 +182,27 @@ if [[ -f "$zshrc_file" ]] && [[ -n "$_FORGE_PLUGIN_LOADED" ]]; then
         
         if [[ "$has_other_plugins" == "true" ]]; then
             print_result warn "Manual plugin loading detected"
-            print_result info "Ensure forge plugin is sourced AFTER zsh-autosuggestions and zsh-syntax-highlighting"
+            print_result info "Ensure goblin plugin is sourced AFTER zsh-autosuggestions and zsh-syntax-highlighting"
         fi
     fi
 fi
 
 # 4. Check ZSH theme RPROMPT
-print_section "FORGE RIGHT PROMPT"
+print_section "GOBLIN RIGHT PROMPT"
 
-# Check if forge theme is loaded by checking environment variable
-if [[ -n "$_FORGE_THEME_LOADED" ]]; then
-    print_result pass "Forge theme loaded"
+# Check if goblin theme is loaded by checking environment variable
+if [[ -n "$_GOBLIN_THEME_LOADED" ]]; then
+    print_result pass "Goblin theme loaded"
 elif (( $+functions[p10k] )); then
-    print_result info "Powerlevel10k detected (not using Forge theme)"
+    print_result info "Powerlevel10k detected (not using Goblin theme)"
 elif [[ -n "$ZSH_THEME" ]]; then
     print_result warn "Using theme: ${ZSH_THEME}"
-    print_result instruction "To use Forge theme, add to ~/.zshrc:"
-    print_result code "eval \"\$(forge zsh theme)\""
+    print_result instruction "To use Goblin theme, add to ~/.zshrc:"
+    print_result code "eval \"\$(goblin zsh theme)\""
 else
     print_result warn "No theme loaded"
-    print_result instruction "To use Forge theme, add to ~/.zshrc:"
-    print_result code "eval \"\$(forge zsh theme)\""
+    print_result instruction "To use Goblin theme, add to ~/.zshrc:"
+    print_result code "eval \"\$(goblin zsh theme)\""
 fi
 
 # Helper function to compare versions
@@ -328,17 +328,17 @@ fi
 # 7. Check system configuration
 print_section "System"
 
-# Check editor configuration (FORGE_EDITOR takes precedence over EDITOR)
-if [[ -n "$FORGE_EDITOR" ]]; then
-    print_result pass "FORGE_EDITOR: ${FORGE_EDITOR}"
+# Check editor configuration (GOBLIN_EDITOR takes precedence over EDITOR)
+if [[ -n "$GOBLIN_EDITOR" ]]; then
+    print_result pass "GOBLIN_EDITOR: ${GOBLIN_EDITOR}"
     if [[ -n "$EDITOR" ]]; then
         print_result info "EDITOR also set: ${EDITOR} (ignored)"
     fi
 elif [[ -n "$EDITOR" ]]; then
     print_result pass "EDITOR: ${EDITOR}"
-    print_result info "TIP: Set FORGE_EDITOR for forge-specific editor"
+    print_result info "TIP: Set GOBLIN_EDITOR for goblin-specific editor"
 else
-    print_result warn "No editor configured" "export EDITOR=vim or export FORGE_EDITOR=vim"
+    print_result warn "No editor configured" "export EDITOR=vim or export GOBLIN_EDITOR=vim"
 fi
 
 # Check PATH for common issues
@@ -424,7 +424,7 @@ if [[ "$platform" == "Darwin" ]]; then
         print_result info "• VS Code: Settings → terminal.integrated.macOptionIsMeta → true"
         print_result info "• iTerm2: Preferences → Profiles → Keys → Option Key → Esc+"
         print_result info "• Terminal.app: Preferences → Profiles → Keyboard → Use Option as Meta"
-        print_result info "Run 'forge zsh keyboard' for detailed keyboard shortcuts"
+        print_result info "Run 'goblin zsh keyboard' for detailed keyboard shortcuts"
     fi
     
 elif [[ "$platform" == "Linux" ]]; then
@@ -514,7 +514,7 @@ elif [[ "$platform" == "Linux" ]]; then
         print_result info "• GNOME Terminal: Usually works by default"
         print_result info "• Konsole: Usually works by default"
         print_result info "• xterm: Add 'XTerm*metaSendsEscape: true' to ~/.Xresources"
-        print_result info "Run 'forge zsh keyboard' for detailed keyboard shortcuts"
+        print_result info "Run 'goblin zsh keyboard' for detailed keyboard shortcuts"
     fi
 else
     # Other platforms (BSD, etc.)
@@ -544,10 +544,10 @@ elif [[ -n "$USE_NERD_FONT" ]]; then
     fi
 else
     print_result pass "Nerd Font: enabled (default)"
-    print_result info "Forge will auto-detect based on terminal capabilities"
+    print_result info "Goblin will auto-detect based on terminal capabilities"
 fi
 
-# Show actual icons used in Forge theme for manual verification (skip if explicitly disabled)
+# Show actual icons used in Goblin theme for manual verification (skip if explicitly disabled)
 local nerd_font_disabled=false
 if [[ -n "$NERD_FONT" && "$NERD_FONT" != "1" && "$NERD_FONT" != "true" ]]; then
     nerd_font_disabled=true
@@ -558,9 +558,9 @@ fi
 if [[ "$nerd_font_disabled" == "false" ]]; then
     echo ""
     echo "$(yellow "Visual Check [Manual Verification Required]")"
-echo "   $(bold "󱙺 FORGE 33.0k") $(cyan " tonic-1.0")"
+echo "   $(bold "󱙺 GOBLIN 33.0k") $(cyan " tonic-1.0")"
     echo ""
-    echo "   Forge uses Nerd Fonts to enrich cli experience, can you see all the icons clearly without any overlap?"
+    echo "   Goblin uses Nerd Fonts to enrich cli experience, can you see all the icons clearly without any overlap?"
     echo "   If you see boxes (□) or question marks (?), install a Nerd Font from:"
     echo "   $(dim "https://www.nerdfonts.com/")"
     echo ""

@@ -7,20 +7,20 @@
 # 1. Check if user_action is a CUSTOM command -> execute with `cmd` subcommand
 # 2. If no input_text -> switch to agent (for AGENT type commands)
 # 3. If input_text -> execute command with active agent context
-function _forge_action_default() {
+function _Goblin_action_default() {
     local user_action="$1"
     local input_text="$2"
     local command_type=""
     
     # Validate that the command exists in show-commands (if user_action is provided)
     if [[ -n "$user_action" ]]; then
-        local commands_list=$(_forge_get_commands)
+        local commands_list=$(_Goblin_get_commands)
         if [[ -n "$commands_list" ]]; then
             # Check if the user_action is in the list of valid commands and extract the row
             local command_row=$(echo "$commands_list" | grep "^${user_action}\b")
             if [[ -z "$command_row" ]]; then
                 echo
-                _forge_log error "Command '\033[1m${user_action}\033[0m' not found"
+                _Goblin_log error "Command '\033[1m${user_action}\033[0m' not found"
                 return 0
             fi
             
@@ -30,18 +30,18 @@ function _forge_action_default() {
             # Case-insensitive comparison using :l (lowercase) modifier
             if [[ "${command_type:l}" == "custom" ]]; then
                 # Generate conversation ID if needed (don't track previous for auto-generation)
-                if [[ -z "$_FORGE_CONVERSATION_ID" ]]; then
-                    local new_id=$($_FORGE_BIN conversation new)
+                if [[ -z "$_GOBLIN_CONVERSATION_ID" ]]; then
+                    local new_id=$($_GOBLIN_BIN conversation new)
                     # Use helper but don't track previous for auto-generation
-                    _FORGE_CONVERSATION_ID="$new_id"
+                    _GOBLIN_CONVERSATION_ID="$new_id"
                 fi
                 
                 echo
                 # Execute custom command with execute subcommand
                 if [[ -n "$input_text" ]]; then
-                    _forge_exec cmd execute --cid "$_FORGE_CONVERSATION_ID" "$user_action" "$input_text"
+                    _Goblin_exec cmd execute --cid "$_GOBLIN_CONVERSATION_ID" "$user_action" "$input_text"
                 else
-                    _forge_exec cmd execute --cid "$_FORGE_CONVERSATION_ID" "$user_action"
+                    _Goblin_exec cmd execute --cid "$_GOBLIN_CONVERSATION_ID" "$user_action"
                 fi
                 return 0
             fi
@@ -53,41 +53,41 @@ function _forge_action_default() {
         if [[ -n "$user_action" ]]; then
             if [[ "${command_type:l}" != "agent" ]]; then
                 echo
-                _forge_log error "Command '\033[1m${user_action}\033[0m' not found"
+                _Goblin_log error "Command '\033[1m${user_action}\033[0m' not found"
                 return 0
             fi
             echo
             # Set the agent in the local variable
-            _FORGE_ACTIVE_AGENT="$user_action"
-            _forge_log info "\033[1;37m${_FORGE_ACTIVE_AGENT:u}\033[0m \033[90mis now the active agent\033[0m"
+            _GOBLIN_ACTIVE_AGENT="$user_action"
+            _Goblin_log info "\033[1;37m${_GOBLIN_ACTIVE_AGENT:u}\033[0m \033[90mis now the active agent\033[0m"
         fi
         return 0
     fi
     
     # Generate conversation ID if needed (don't track previous for auto-generation)
-    if [[ -z "$_FORGE_CONVERSATION_ID" ]]; then
-        local new_id=$($_FORGE_BIN conversation new)
+    if [[ -z "$_GOBLIN_CONVERSATION_ID" ]]; then
+        local new_id=$($_GOBLIN_BIN conversation new)
         # Use direct assignment here - no previous to track for auto-generation
-        _FORGE_CONVERSATION_ID="$new_id"
+        _GOBLIN_CONVERSATION_ID="$new_id"
     fi
     
     echo
     
     # Only set the agent if user explicitly specified one
     if [[ -n "$user_action" ]]; then
-        _FORGE_ACTIVE_AGENT="$user_action"
+        _GOBLIN_ACTIVE_AGENT="$user_action"
     fi
     
-    # Execute the forge command directly with proper escaping
-    _forge_exec_interactive -p "$input_text" --cid "$_FORGE_CONVERSATION_ID"
+    # Execute the Goblin command directly with proper escaping
+    _Goblin_exec_interactive -p "$input_text" --cid "$_GOBLIN_CONVERSATION_ID"
     
     # Start background sync job if enabled and not already running
-    _forge_start_background_sync
+    _Goblin_start_background_sync
     # Start background update check
-    _forge_start_background_update
+    _Goblin_start_background_update
 }
 
-function forge-accept-line() {
+function Goblin-accept-line() {
     # Save the original command for history
     local original_buffer="$BUFFER"
     
@@ -119,7 +119,7 @@ function forge-accept-line() {
     print -s -- "$original_buffer"
     
     # CRITICAL: Move cursor to end so output doesn't overwrite
-    # Don't clear BUFFER yet - let _forge_reset do that after action completes
+    # Don't clear BUFFER yet - let _Goblin_reset do that after action completes
     # This keeps buffer state consistent if Ctrl+C is pressed
     CURSOR=${#BUFFER}
     zle redisplay
@@ -135,7 +135,7 @@ function forge-accept-line() {
     esac
     
     # ⚠️  IMPORTANT: When adding a new command here, you MUST also update:
-    #     crates/forge_main/src/built_in_commands.json
+    #     crates/Goblin_main/src/built_in_commands.json
     #     Add a new entry: {"command": "name", "description": "Description [alias: x]"}
     #
     # Naming convention: shell commands should follow Object-Action (e.g., provider-login).
@@ -143,120 +143,120 @@ function forge-accept-line() {
     # Dispatch to appropriate action handler using pattern matching
     case "$user_action" in
         new|n)
-            _forge_action_new "$input_text"
+            _Goblin_action_new "$input_text"
         ;;
         info|i)
-            _forge_action_info
+            _Goblin_action_info
         ;;
         env|e)
-            _forge_action_env
+            _Goblin_action_env
         ;;
         dump|d)
-            _forge_action_dump "$input_text"
+            _Goblin_action_dump "$input_text"
         ;;
         compact)
-            _forge_action_compact
+            _Goblin_action_compact
         ;;
         retry|r)
-            _forge_action_retry
+            _Goblin_action_retry
         ;;
         agent|a)
-            _forge_action_agent "$input_text"
+            _Goblin_action_agent "$input_text"
         ;;
         conversation|c)
-            _forge_action_conversation "$input_text"
+            _Goblin_action_conversation "$input_text"
         ;;
         config-provider|provider|p)
-            _forge_action_provider "$input_text"
+            _Goblin_action_provider "$input_text"
         ;;
         config-model|cm)
-            _forge_action_model "$input_text"
+            _Goblin_action_model "$input_text"
         ;;
         model|m)
-            _forge_action_session_model "$input_text"
+            _Goblin_action_session_model "$input_text"
         ;;
         model-reset|mr)
-            _forge_action_model_reset
+            _Goblin_action_model_reset
         ;;
         config-commit-model|ccm)
-            _forge_action_commit_model "$input_text"
+            _Goblin_action_commit_model "$input_text"
         ;;
         config-suggest-model|csm)
-            _forge_action_suggest_model "$input_text"
+            _Goblin_action_suggest_model "$input_text"
         ;;
         tools|t)
-            _forge_action_tools
+            _Goblin_action_tools
         ;;
         config)
-            _forge_action_config
+            _Goblin_action_config
         ;;
         config-edit|ce)
-            _forge_action_config_edit
+            _Goblin_action_config_edit
         ;;
         skill)
-            _forge_action_skill
+            _Goblin_action_skill
         ;;
         edit|ed)
-            _forge_action_editor "$input_text"
+            _Goblin_action_editor "$input_text"
             # Note: editor action intentionally modifies BUFFER and handles its own prompt reset
             return
         ;;
         commit)
-            _forge_action_commit "$input_text"
+            _Goblin_action_commit "$input_text"
         ;;
         commit-preview)
-            _forge_action_commit_preview "$input_text"
+            _Goblin_action_commit_preview "$input_text"
             # Note: commit action intentionally modifies BUFFER and handles its own prompt reset
             return
         ;;
         suggest|s)
-            _forge_action_suggest "$input_text"
+            _Goblin_action_suggest "$input_text"
             # Note: suggest action intentionally modifies BUFFER and handles its own prompt reset
             return
         ;;
         clone)
-            _forge_action_clone "$input_text"
+            _Goblin_action_clone "$input_text"
         ;;
         rename|rn)
-            _forge_action_rename "$input_text"
+            _Goblin_action_rename "$input_text"
         ;;
         conversation-rename)
-            _forge_action_conversation_rename "$input_text"
+            _Goblin_action_conversation_rename "$input_text"
         ;;
         copy)
-            _forge_action_copy
+            _Goblin_action_copy
         ;;
         workspace-sync|sync)
-            _forge_action_sync
+            _Goblin_action_sync
         ;;
         workspace-init|sync-init)
-            _forge_action_sync_init
+            _Goblin_action_sync_init
         ;;
         workspace-status|sync-status)
-            _forge_action_sync_status
+            _Goblin_action_sync_status
         ;;
         workspace-info|sync-info)
-            _forge_action_sync_info
+            _Goblin_action_sync_info
         ;;
         provider-login|login)
-            _forge_action_login "$input_text"
+            _Goblin_action_login "$input_text"
         ;;
         logout)
-            _forge_action_logout "$input_text"
+            _Goblin_action_logout "$input_text"
         ;;
         doctor)
-            _forge_action_doctor
+            _Goblin_action_doctor
         ;;
         keyboard-shortcuts|kb)
-            _forge_action_keyboard
+            _Goblin_action_keyboard
         ;;
         *)
-            _forge_action_default "$user_action" "$input_text"
+            _Goblin_action_default "$user_action" "$input_text"
         ;;
     esac
     
     # Centralized reset after all actions complete
-    # This ensures consistent prompt state without requiring each action to call _forge_reset
+    # This ensures consistent prompt state without requiring each action to call _Goblin_reset
     # Exceptions: editor, commit-preview, and suggest actions return early as they intentionally modify BUFFER
-    _forge_reset
+    _Goblin_reset
 }

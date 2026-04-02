@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
-# Key bindings and widget registration for forge plugin
+# Key bindings and widget registration for Goblin plugin
 
 # Register ZLE widgets
-zle -N forge-accept-line
-zle -N forge-completion
+zle -N Goblin-accept-line
+zle -N Goblin-completion
 
 # Custom bracketed-paste handler to fix syntax highlighting after paste
 # Addresses timing issues by ensuring buffer state stabilizes before prompt reset
-function forge-bracketed-paste() {
+function Goblin-bracketed-paste() {
     # Call the built-in bracketed-paste widget first
     zle .$WIDGET "$@"
     
@@ -22,10 +22,10 @@ function forge-bracketed-paste() {
 }
 
 # Register the bracketed paste widget to fix highlighting on paste
-zle -N bracketed-paste forge-bracketed-paste
+zle -N bracketed-paste Goblin-bracketed-paste
 
 # Bind Enter to our custom accept-line that transforms :commands
-bindkey '^M' forge-accept-line
-bindkey '^J' forge-accept-line
+bindkey '^M' Goblin-accept-line
+bindkey '^J' Goblin-accept-line
 # Update the Tab binding to use the new completion widget
-bindkey '^I' forge-completion  # Tab for both @ and :command completion
+bindkey '^I' Goblin-completion  # Tab for both @ and :command completion

@@ -1,50 +1,50 @@
 #!/usr/bin/env zsh
 
-# Core utility functions for forge plugin
+# Core utility functions for Goblin plugin
 
 # Lazy loader for commands cache
 # Loads the commands list only when first needed, avoiding startup cost
-function _forge_get_commands() {
-    if [[ -z "$_FORGE_COMMANDS" ]]; then
-        _FORGE_COMMANDS="$(CLICOLOR_FORCE=0 $_FORGE_BIN list commands --porcelain 2>/dev/null)"
+function _Goblin_get_commands() {
+    if [[ -z "$_GOBLIN_COMMANDS" ]]; then
+        _GOBLIN_COMMANDS="$(CLICOLOR_FORCE=0 $_GOBLIN_BIN list commands --porcelain 2>/dev/null)"
     fi
-    echo "$_FORGE_COMMANDS"
+    echo "$_GOBLIN_COMMANDS"
 }
 
 # Private fzf function with common options for consistent UX
-function _forge_fzf() {
+function _Goblin_fzf() {
     fzf --reverse --exact --cycle --select-1 --height 80% --no-scrollbar --ansi --color="header:bold" "$@"
 }
 
-# Helper function to execute forge commands consistently
+# Helper function to execute Goblin commands consistently
 # This ensures proper handling of special characters and consistent output
-function _forge_exec() {
-    local agent_id="${_FORGE_ACTIVE_AGENT:-forge}"
+function _Goblin_exec() {
+    local agent_id="${_GOBLIN_ACTIVE_AGENT:-Goblin}"
     local -a cmd
-    cmd=($_FORGE_BIN --agent "$agent_id")
+    cmd=($_GOBLIN_BIN --agent "$agent_id")
     cmd+=("$@")
-    [[ -n "$_FORGE_SESSION_MODEL" ]] && local -x FORGE_SESSION__MODEL_ID="$_FORGE_SESSION_MODEL"
-    [[ -n "$_FORGE_SESSION_PROVIDER" ]] && local -x FORGE_SESSION__PROVIDER_ID="$_FORGE_SESSION_PROVIDER"
+    [[ -n "$_GOBLIN_SESSION_MODEL" ]] && local -x GOBLIN_SESSION__MODEL_ID="$_GOBLIN_SESSION_MODEL"
+    [[ -n "$_GOBLIN_SESSION_PROVIDER" ]] && local -x GOBLIN_SESSION__PROVIDER_ID="$_GOBLIN_SESSION_PROVIDER"
     "${cmd[@]}"
 }
 
-# Like _forge_exec but connects stdin/stdout to /dev/tty so that interactive
-# prompts (rustyline, fzf, etc.) work correctly when forge is launched as a
+# Like _Goblin_exec but connects stdin/stdout to /dev/tty so that interactive
+# prompts (rustyline, fzf, etc.) work correctly when Goblin is launched as a
 # child of a ZLE widget. ZLE owns the terminal and replaces the process's
 # stdin/stdout with its own pipes, so without this redirect any readline
 # library would see a non-tty stdin and return EOF immediately.
-# Do NOT use inside $(...) command substitutions - use _forge_exec instead.
-function _forge_exec_interactive() {
-    local agent_id="${_FORGE_ACTIVE_AGENT:-forge}"
+# Do NOT use inside $(...) command substitutions - use _Goblin_exec instead.
+function _Goblin_exec_interactive() {
+    local agent_id="${_GOBLIN_ACTIVE_AGENT:-Goblin}"
     local -a cmd
-    cmd=($_FORGE_BIN --agent "$agent_id")
+    cmd=($_GOBLIN_BIN --agent "$agent_id")
     cmd+=("$@")
-    [[ -n "$_FORGE_SESSION_MODEL" ]] && local -x FORGE_SESSION__MODEL_ID="$_FORGE_SESSION_MODEL"
-    [[ -n "$_FORGE_SESSION_PROVIDER" ]] && local -x FORGE_SESSION__PROVIDER_ID="$_FORGE_SESSION_PROVIDER"
+    [[ -n "$_GOBLIN_SESSION_MODEL" ]] && local -x GOBLIN_SESSION__MODEL_ID="$_GOBLIN_SESSION_MODEL"
+    [[ -n "$_GOBLIN_SESSION_PROVIDER" ]] && local -x GOBLIN_SESSION__PROVIDER_ID="$_GOBLIN_SESSION_PROVIDER"
     "${cmd[@]}" </dev/tty >/dev/tty
 }
 
-function _forge_reset() {
+function _Goblin_reset() {
   # Clear buffer and reset cursor position
   BUFFER=""
   CURSOR=0
@@ -56,11 +56,11 @@ function _forge_reset() {
 
 # Helper function to find the index of a value in a list (1-based)
 # Returns the index if found, 1 otherwise
-# Usage: _forge_find_index <output> <value_to_find> [field_number] [field_number2] [value_to_find2]
+# Usage: _Goblin_find_index <output> <value_to_find> [field_number] [field_number2] [value_to_find2]
 # field_number: which porcelain column to compare (1-based, using multi-space delimiter)
 # field_number2/value_to_find2: optional second column+value for compound matching
 # Note: This function expects porcelain output WITH headers and skips the header line
-function _forge_find_index() {
+function _Goblin_find_index() {
     local output="$1"
     local value_to_find="$2"
     local field_number="${3:-1}"
@@ -97,10 +97,10 @@ function _forge_find_index() {
 }
 
 # Helper function to print messages with consistent formatting based on log level
-# Usage: _forge_log <level> <message>
+# Usage: _Goblin_log <level> <message>
 # Levels: error, info, success, warning, debug
-# Color scheme matches crates/forge_main/src/title_display.rs
-function _forge_log() {
+# Color scheme matches crates/Goblin_main/src/title_display.rs
+function _Goblin_log() {
     local level="$1"
     local message="$2"
     local timestamp="\033[90m[$(date '+%H:%M:%S')]\033[0m"
@@ -133,19 +133,19 @@ function _forge_log() {
 }
 
 # Helper function to check if a workspace is indexed
-# Usage: _forge_is_workspace_indexed <workspace_path>
+# Usage: _Goblin_is_workspace_indexed <workspace_path>
 # Returns: 0 if workspace is indexed, 1 otherwise
-function _forge_is_workspace_indexed() {
+function _Goblin_is_workspace_indexed() {
     local workspace_path="$1"
-    $_FORGE_BIN workspace info "$workspace_path" >/dev/null 2>&1
+    $_GOBLIN_BIN workspace info "$workspace_path" >/dev/null 2>&1
     return $?
 }
 
 # Start background sync job for current workspace if not already running
 # Uses canonical path hash to identify workspace
-function _forge_start_background_sync() {
+function _Goblin_start_background_sync() {
     # Check if sync is enabled (default to true if not set)
-    local sync_enabled="${FORGE_SYNC_ENABLED:-true}"
+    local sync_enabled="${GOBLIN_SYNC_ENABLED:-true}"
     if [[ "$sync_enabled" != "true" ]]; then
         return 0
     fi
@@ -160,24 +160,24 @@ function _forge_start_background_sync() {
         # Redirect stdin to /dev/null to prevent hanging if sync tries to read input
         exec >/dev/null 2>&1 </dev/null
         setopt NO_NOTIFY NO_MONITOR
-        if ! _forge_is_workspace_indexed "$workspace_path"; then
+        if ! _Goblin_is_workspace_indexed "$workspace_path"; then
             return 0
         fi
         # Should fail if sync-init or sync --init has not been performed even once
-        $_FORGE_BIN workspace sync "$workspace_path"
+        $_GOBLIN_BIN workspace sync "$workspace_path"
     } &!
 }
 
 # Start background update check if not already running
 # Mirrors the background sync pattern to silently check for and apply updates
-function _forge_start_background_update() {
+function _Goblin_start_background_update() {
     {
         # Run update check in background
         # Close all output streams immediately to prevent any flashing
         # Redirect stdin to /dev/null to prevent hanging
         exec >/dev/null 2>&1 </dev/null
         setopt NO_NOTIFY NO_MONITOR
-        $_FORGE_BIN update --no-confirm
+        $_GOBLIN_BIN update --no-confirm
     } &!
 }
 

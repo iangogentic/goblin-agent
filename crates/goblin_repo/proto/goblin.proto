@@ -4,7 +4,7 @@ import "google/protobuf/timestamp.proto";
 
 package goblin.v1;
 
-// Main service for interacting with Forge's context engine
+// Main service for interacting with Goblin's context engine
 service GoblinService {
   // Searches for nodes matching a query
   rpc Search(SearchRequest) returns (SearchResponse);

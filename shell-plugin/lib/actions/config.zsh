@@ -3,7 +3,7 @@
 # Configuration action handlers (agent, provider, model, tools, skill)
 
 # Action handler: Select agent
-function _forge_action_agent() {
+function _Goblin_action_agent() {
     local input_text="$1"
     
     echo
@@ -13,28 +13,28 @@ function _forge_action_agent() {
         local agent_id="$input_text"
         
         # Validate that the agent exists (skip header line)
-        local agent_exists=$($_FORGE_BIN list agents --porcelain 2>/dev/null | tail -n +2 | grep -q "^${agent_id}\b" && echo "true" || echo "false")
+        local agent_exists=$($_GOBLIN_BIN list agents --porcelain 2>/dev/null | tail -n +2 | grep -q "^${agent_id}\b" && echo "true" || echo "false")
         if [[ "$agent_exists" == "false" ]]; then
-            _forge_log error "Agent '\033[1m${agent_id}\033[0m' not found"
+            _Goblin_log error "Agent '\033[1m${agent_id}\033[0m' not found"
             return 0
         fi
         
         # Set the agent as active
-        _FORGE_ACTIVE_AGENT="$agent_id"
+        _GOBLIN_ACTIVE_AGENT="$agent_id"
         
         # Print log about agent switching
-        _forge_log success "Switched to agent \033[1m${agent_id}\033[0m"
+        _Goblin_log success "Switched to agent \033[1m${agent_id}\033[0m"
         
         return 0
     fi
     
     # Get agents list
     local agents_output
-    agents_output=$($_FORGE_BIN list agents --porcelain 2>/dev/null)
+    agents_output=$($_GOBLIN_BIN list agents --porcelain 2>/dev/null)
     
     if [[ -n "$agents_output" ]]; then
         # Get current agent ID
-        local current_agent="$_FORGE_ACTIVE_AGENT"
+        local current_agent="$_GOBLIN_ACTIVE_AGENT"
         
         local sorted_agents="$agents_output"
         
@@ -42,60 +42,60 @@ function _forge_action_agent() {
         local prompt_text="Agent ❯ "
         local fzf_args=(
             --prompt="$prompt_text"
-            --delimiter="$_FORGE_DELIMITER"
+            --delimiter="$_GOBLIN_DELIMITER"
             --with-nth="1,2,4,5,6"
         )
 
         # If there's a current agent, position cursor on it
         if [[ -n "$current_agent" ]]; then
-            local index=$(_forge_find_index "$sorted_agents" "$current_agent")
+            local index=$(_Goblin_find_index "$sorted_agents" "$current_agent")
             fzf_args+=(--bind="start:pos($index)")
         fi
 
         local selected_agent
         # Use fzf without preview for simple selection like provider/model
-        selected_agent=$(echo "$sorted_agents" | _forge_fzf --header-lines=1 "${fzf_args[@]}")
+        selected_agent=$(echo "$sorted_agents" | _Goblin_fzf --header-lines=1 "${fzf_args[@]}")
         
         if [[ -n "$selected_agent" ]]; then
             # Extract the first field (agent ID)
             local agent_id=$(echo "$selected_agent" | awk '{print $1}')
             
             # Set the selected agent as active
-            _FORGE_ACTIVE_AGENT="$agent_id"
+            _GOBLIN_ACTIVE_AGENT="$agent_id"
             
             # Print log about agent switching
-            _forge_log success "Switched to agent \033[1m${agent_id}\033[0m"
+            _Goblin_log success "Switched to agent \033[1m${agent_id}\033[0m"
             
         fi
     else
-        _forge_log error "No agents found"
+        _Goblin_log error "No agents found"
     fi
 }
 
 # Action handler: Select provider
-function _forge_action_provider() {
+function _Goblin_action_provider() {
     local input_text="$1"
     echo
     local selected
     # Only show LLM providers (exclude context_engine and other non-LLM types)
     # Pass input_text as query parameter for fuzzy search
-    selected=$(_forge_select_provider "" "" "llm" "$input_text")
+    selected=$(_Goblin_select_provider "" "" "llm" "$input_text")
     
     if [[ -n "$selected" ]]; then
         # Extract the second field (provider ID) from the selected line
         # Format: "DisplayName  provider_id  host  type  status"
         local provider_id=$(echo "$selected" | awk '{print $2}')
-        # Use _forge_exec_interactive because config-set may trigger
+        # Use _Goblin_exec_interactive because config-set may trigger
         # interactive authentication prompts (rustyline) when the provider
         # is not yet configured. Without /dev/tty redirection, ZLE's pipes
         # cause rustyline to see EOF and fail with "API key input cancelled".
-        _forge_exec_interactive config set provider "$provider_id"
+        _Goblin_exec_interactive config set provider "$provider_id"
     fi
 }
 
 # Helper: Open an fzf model picker and print the raw selected line.
 #
-# Model list columns (from `forge list models --porcelain`):
+# Model list columns (from `Goblin list models --porcelain`):
 #   1:model_id  2:model_name  3:provider(display)  4:provider_id(raw)  5:context  6:tools  7:image
 # The picker hides model_id (field 1) and provider_id (field 4) via --with-nth.
 #
@@ -108,7 +108,7 @@ function _forge_action_provider() {
 #                          (3 for display name, 4 for raw id)
 #
 # Outputs the raw selected line to stdout, or nothing if cancelled.
-function _forge_pick_model() {
+function _Goblin_pick_model() {
     local prompt_text="$1"
     local current_model="$2"
     local input_text="$3"
@@ -116,14 +116,14 @@ function _forge_pick_model() {
     local provider_field="${5:-}"
 
     local output
-    output=$($_FORGE_BIN list models --porcelain 2>/dev/null)
+    output=$($_GOBLIN_BIN list models --porcelain 2>/dev/null)
 
     if [[ -z "$output" ]]; then
         return 1
     fi
 
     local fzf_args=(
-        --delimiter="$_FORGE_DELIMITER"
+        --delimiter="$_GOBLIN_DELIMITER"
         --prompt="$prompt_text"
         --with-nth="2,3,5.."
     )
@@ -137,29 +137,29 @@ function _forge_pick_model() {
         # when the same model name exists across multiple providers
         local index
         if [[ -n "$current_provider" && -n "$provider_field" ]]; then
-            index=$(_forge_find_index "$output" "$current_model" 1 "$provider_field" "$current_provider")
+            index=$(_Goblin_find_index "$output" "$current_model" 1 "$provider_field" "$current_provider")
         else
-            index=$(_forge_find_index "$output" "$current_model" 1)
+            index=$(_Goblin_find_index "$output" "$current_model" 1)
         fi
         fzf_args+=(--bind="start:pos($index)")
     fi
 
-    echo "$output" | _forge_fzf --header-lines=1 "${fzf_args[@]}"
+    echo "$output" | _Goblin_fzf --header-lines=1 "${fzf_args[@]}"
 }
 
 # Action handler: Select model (across all configured providers)
 # When the selected model belongs to a different provider, switches it first.
-function _forge_action_model() {
+function _Goblin_action_model() {
     local input_text="$1"
     (
         echo
         local current_model current_provider
-        current_model=$($_FORGE_BIN config get model 2>/dev/null)
+        current_model=$($_GOBLIN_BIN config get model 2>/dev/null)
         # config get provider returns the display name (e.g. "OpenAI"),
         # which corresponds to porcelain field 3 (provider display)
-        current_provider=$($_FORGE_BIN config get provider 2>/dev/null)
+        current_provider=$($_GOBLIN_BIN config get provider 2>/dev/null)
         local selected
-        selected=$(_forge_pick_model "Model ❯ " "$current_model" "$input_text" "$current_provider" 3)
+        selected=$(_Goblin_pick_model "Model ❯ " "$current_model" "$input_text" "$current_provider" 3)
 
         if [[ -n "$selected" ]]; then
             # Field 1 = model_id (raw), field 3 = provider display name,
@@ -173,29 +173,29 @@ function _forge_action_model() {
             # Switch provider first if it differs from the current one
             # current_provider (fetched above) is the display name, compare against that
             if [[ -n "$provider_display" && "$provider_display" != "$current_provider" ]]; then
-                _forge_exec_interactive config set provider "$provider_id" --model "$model_id"
+                _Goblin_exec_interactive config set provider "$provider_id" --model "$model_id"
                 return
             fi
-             _forge_exec config set model "$model_id"
+             _Goblin_exec config set model "$model_id"
         fi
     )
 }
 
 # Action handler: Select model for commit message generation
-# Calls `forge config set commit <provider_id> <model_id>` on selection.
-function _forge_action_commit_model() {
+# Calls `Goblin config set commit <provider_id> <model_id>` on selection.
+function _Goblin_action_commit_model() {
     local input_text="$1"
     (
         echo
         # config get commit outputs two lines: provider_id (raw) then model_id
         local commit_output current_commit_model current_commit_provider
-        commit_output=$(_forge_exec config get commit 2>/dev/null)
+        commit_output=$(_Goblin_exec config get commit 2>/dev/null)
         current_commit_provider=$(echo "$commit_output" | head -n 1)
         current_commit_model=$(echo "$commit_output" | tail -n 1)
 
         local selected
         # provider_id from config get commit is the raw id, matching porcelain field 4
-        selected=$(_forge_pick_model "Commit Model ❯ " "$current_commit_model" "$input_text" "$current_commit_provider" 4)
+        selected=$(_Goblin_pick_model "Commit Model ❯ " "$current_commit_model" "$input_text" "$current_commit_provider" 4)
 
         if [[ -n "$selected" ]]; then
             # Field 1 = model_id (raw), field 4 = provider_id (raw)
@@ -205,26 +205,26 @@ function _forge_action_commit_model() {
             model_id=${model_id//[[:space:]]/}
             provider_id=${provider_id//[[:space:]]/}
 
-            _forge_exec config set commit "$provider_id" "$model_id"
+            _Goblin_exec config set commit "$provider_id" "$model_id"
         fi
     )
 }
 
 # Action handler: Select model for command suggestion generation
-# Calls `forge config set suggest <provider_id> <model_id>` on selection.
-function _forge_action_suggest_model() {
+# Calls `Goblin config set suggest <provider_id> <model_id>` on selection.
+function _Goblin_action_suggest_model() {
     local input_text="$1"
     (
         echo
         # config get suggest outputs two lines: provider_id (raw) then model_id
         local suggest_output current_suggest_model current_suggest_provider
-        suggest_output=$(_forge_exec config get suggest 2>/dev/null)
+        suggest_output=$(_Goblin_exec config get suggest 2>/dev/null)
         current_suggest_provider=$(echo "$suggest_output" | head -n 1)
         current_suggest_model=$(echo "$suggest_output" | tail -n 1)
 
         local selected
         # provider_id from config get suggest is the raw id, matching porcelain field 4
-        selected=$(_forge_pick_model "Suggest Model ❯ " "$current_suggest_model" "$input_text" "$current_suggest_provider" 4)
+        selected=$(_Goblin_pick_model "Suggest Model ❯ " "$current_suggest_model" "$input_text" "$current_suggest_provider" 4)
 
         if [[ -n "$selected" ]]; then
             # Field 1 = model_id (raw), field 4 = provider_id (raw)
@@ -234,40 +234,40 @@ function _forge_action_suggest_model() {
             model_id=${model_id//[[:space:]]/}
             provider_id=${provider_id//[[:space:]]/}
 
-            _forge_exec config set suggest "$provider_id" "$model_id"
+            _Goblin_exec config set suggest "$provider_id" "$model_id"
         fi
     )
 }
 
 # Action handler: Sync workspace for codebase search
-function _forge_action_sync() {
+function _Goblin_action_sync() {
     echo
     # Execute sync with stdin redirected to prevent hanging
     # Sync doesn't need interactive input, so close stdin immediately
     # --init initializes the workspace first if it has not been set up yet
-    _forge_exec workspace sync --init </dev/null
+    _Goblin_exec workspace sync --init </dev/null
 }
 
 # Action handler: inits workspace for codebase search
-function _forge_action_sync_init() {
+function _Goblin_action_sync_init() {
     echo
-    _forge_exec workspace init </dev/null
+    _Goblin_exec workspace init </dev/null
 }
 
 # Action handler: Show sync status of workspace files
-function _forge_action_sync_status() {
+function _Goblin_action_sync_status() {
     echo
-    _forge_exec workspace status "."
+    _Goblin_exec workspace status "."
 }
 
 # Action handler: Show workspace info with sync details
-function _forge_action_sync_info() {
+function _Goblin_action_sync_info() {
     echo
-    _forge_exec workspace info "."
+    _Goblin_exec workspace info "."
 }
 
 # Helper function to select and set config values with fzf
-function _forge_select_and_set_config() {
+function _Goblin_select_and_set_config() {
     local show_command="$1"
     local config_flag="$2"
     local prompt_text="$3"
@@ -281,14 +281,14 @@ function _forge_select_and_set_config() {
         if [[ "$show_command" == *" "* ]]; then
             # Split the command into words and execute with --porcelain
             local cmd_parts=(${=show_command})
-            output=$($_FORGE_BIN "${cmd_parts[@]}" --porcelain 2>/dev/null)
+            output=$($_GOBLIN_BIN "${cmd_parts[@]}" --porcelain 2>/dev/null)
         else
-            output=$($_FORGE_BIN "$show_command" --porcelain 2>/dev/null)
+            output=$($_GOBLIN_BIN "$show_command" --porcelain 2>/dev/null)
         fi
         
         if [[ -n "$output" ]]; then
             local selected
-            local fzf_args=(--delimiter="$_FORGE_DELIMITER" --prompt="$prompt_text ❯ ")
+            local fzf_args=(--delimiter="$_GOBLIN_DELIMITER" --prompt="$prompt_text ❯ ")
 
             if [[ -n "$with_nth" ]]; then
                 fzf_args+=(--with-nth="$with_nth")
@@ -301,49 +301,49 @@ function _forge_select_and_set_config() {
 
             if [[ -n "$default_value" ]]; then
                 # For models, compare against the first field (model_id)
-                local index=$(_forge_find_index "$output" "$default_value" 1)
+                local index=$(_Goblin_find_index "$output" "$default_value" 1)
                 
                 fzf_args+=(--bind="start:pos($index)")
                 
             fi
-            selected=$(echo "$output" | _forge_fzf --header-lines=1 "${fzf_args[@]}")
+            selected=$(echo "$output" | _Goblin_fzf --header-lines=1 "${fzf_args[@]}")
 
             if [[ -n "$selected" ]]; then
                 local name="${selected%% *}"
-                _forge_exec config set "$config_flag" "$name"
+                _Goblin_exec config set "$config_flag" "$name"
             fi
         fi
     )
 }
 
 # Action handler: Select model for the current session only.
-# Sets _FORGE_SESSION_MODEL and _FORGE_SESSION_PROVIDER in the shell environment
-# so that every subsequent forge invocation uses those values via --model /
+# Sets _GOBLIN_SESSION_MODEL and _GOBLIN_SESSION_PROVIDER in the shell environment
+# so that every subsequent Goblin invocation uses those values via --model /
 # --provider flags without touching the permanent global configuration.
-function _forge_action_session_model() {
+function _Goblin_action_session_model() {
     local input_text="$1"
     echo
 
     local current_model current_provider provider_index
     # Use session overrides as the starting selection if already set,
     # otherwise fall back to the globally configured values.
-    if [[ -n "$_FORGE_SESSION_MODEL" ]]; then
-        current_model="$_FORGE_SESSION_MODEL"
+    if [[ -n "$_GOBLIN_SESSION_MODEL" ]]; then
+        current_model="$_GOBLIN_SESSION_MODEL"
         provider_index=4
     else
-        current_model=$($_FORGE_BIN config get model 2>/dev/null)
+        current_model=$($_GOBLIN_BIN config get model 2>/dev/null)
         provider_index=3
     fi
-    if [[ -n "$_FORGE_SESSION_PROVIDER" ]]; then
-        current_provider="$_FORGE_SESSION_PROVIDER"
+    if [[ -n "$_GOBLIN_SESSION_PROVIDER" ]]; then
+        current_provider="$_GOBLIN_SESSION_PROVIDER"
         provider_index=4
     else
-        current_provider=$($_FORGE_BIN config get provider 2>/dev/null)
+        current_provider=$($_GOBLIN_BIN config get provider 2>/dev/null)
         provider_index=3
     fi
 
     local selected
-    selected=$(_forge_pick_model "Session Model ❯ " "$current_model" "$input_text" "$current_provider" "$provider_index")
+    selected=$(_Goblin_pick_model "Session Model ❯ " "$current_model" "$input_text" "$current_provider" "$provider_index")
 
     if [[ -n "$selected" ]]; then
         local model_id provider_display provider_id
@@ -351,55 +351,55 @@ function _forge_action_session_model() {
         model_id=${model_id//[[:space:]]/}
         provider_id=${provider_id//[[:space:]]/}
 
-        _FORGE_SESSION_MODEL="$model_id"
-        _FORGE_SESSION_PROVIDER="$provider_id"
+        _GOBLIN_SESSION_MODEL="$model_id"
+        _GOBLIN_SESSION_PROVIDER="$provider_id"
 
-        _forge_log success "Session model set to \033[1m${model_id}\033[0m (provider: \033[1m${provider_id}\033[0m)"
+        _Goblin_log success "Session model set to \033[1m${model_id}\033[0m (provider: \033[1m${provider_id}\033[0m)"
     fi
 }
 
 # Action handler: Reset session model and provider to defaults.
-# Clears both _FORGE_SESSION_MODEL and _FORGE_SESSION_PROVIDER,
-# reverting to global config for subsequent forge invocations.
-function _forge_action_model_reset() {
+# Clears both _GOBLIN_SESSION_MODEL and _GOBLIN_SESSION_PROVIDER,
+# reverting to global config for subsequent Goblin invocations.
+function _Goblin_action_model_reset() {
     echo
 
-    if [[ -z "$_FORGE_SESSION_MODEL" && -z "$_FORGE_SESSION_PROVIDER" ]]; then
-        _forge_log info "Session model already cleared (using global config)"
+    if [[ -z "$_GOBLIN_SESSION_MODEL" && -z "$_GOBLIN_SESSION_PROVIDER" ]]; then
+        _Goblin_log info "Session model already cleared (using global config)"
         return 0
     fi
 
-    _FORGE_SESSION_MODEL=""
-    _FORGE_SESSION_PROVIDER=""
+    _GOBLIN_SESSION_MODEL=""
+    _GOBLIN_SESSION_PROVIDER=""
 
-    _forge_log success "Session model reset to global config"
+    _Goblin_log success "Session model reset to global config"
 }
 
 # Action handler: Show config list
-function _forge_action_config() {
+function _Goblin_action_config() {
     echo
-    $_FORGE_BIN config list
+    $_GOBLIN_BIN config list
 }
 
-# Action handler: Open the global forge config file in an editor
-function _forge_action_config_edit() {
+# Action handler: Open the global Goblin config file in an editor
+function _Goblin_action_config_edit() {
     echo
 
-    # Determine editor in order of preference: FORGE_EDITOR > EDITOR > nano
-    local editor_cmd="${FORGE_EDITOR:-${EDITOR:-nano}}"
+    # Determine editor in order of preference: GOBLIN_EDITOR > EDITOR > nano
+    local editor_cmd="${GOBLIN_EDITOR:-${EDITOR:-nano}}"
 
     # Validate editor exists
     if ! command -v "${editor_cmd%% *}" &>/dev/null; then
-        _forge_log error "Editor not found: $editor_cmd (set FORGE_EDITOR or EDITOR)"
+        _Goblin_log error "Editor not found: $editor_cmd (set GOBLIN_EDITOR or EDITOR)"
         return 1
     fi
 
-    local config_file="${HOME}/forge/.forge.toml"
+    local config_file="${HOME}/Goblin/.Goblin.toml"
 
     # Ensure the config directory exists
-    if [[ ! -d "${HOME}/forge" ]]; then
-        mkdir -p "${HOME}/forge" || {
-            _forge_log error "Failed to create ~/forge directory"
+    if [[ ! -d "${HOME}/Goblin" ]]; then
+        mkdir -p "${HOME}/Goblin" || {
+            _Goblin_log error "Failed to create ~/Goblin directory"
             return 1
         }
     fi
@@ -407,7 +407,7 @@ function _forge_action_config_edit() {
     # Create the config file if it does not yet exist
     if [[ ! -f "$config_file" ]]; then
         touch "$config_file" || {
-            _forge_log error "Failed to create $config_file"
+            _Goblin_log error "Failed to create $config_file"
             return 1
         }
     fi
@@ -417,22 +417,22 @@ function _forge_action_config_edit() {
     local exit_code=$?
 
     if [[ $exit_code -ne 0 ]]; then
-        _forge_log error "Editor exited with error code $exit_code"
+        _Goblin_log error "Editor exited with error code $exit_code"
     fi
 
-    _forge_reset
+    _Goblin_reset
 }
 
 # Action handler: Show tools
-function _forge_action_tools() {
+function _Goblin_action_tools() {
     echo
-    # Ensure FORGE_ACTIVE_AGENT always has a value, default to "forge"
-    local agent_id="${_FORGE_ACTIVE_AGENT:-forge}"
-    _forge_exec list tools "$agent_id"
+    # Ensure GOBLIN_ACTIVE_AGENT always has a value, default to "Goblin"
+    local agent_id="${_GOBLIN_ACTIVE_AGENT:-Goblin}"
+    _Goblin_exec list tools "$agent_id"
 }
 
 # Action handler: Show skills
-function _forge_action_skill() {
+function _Goblin_action_skill() {
     echo
-    _forge_exec list skill
+    _Goblin_exec list skill
 }
