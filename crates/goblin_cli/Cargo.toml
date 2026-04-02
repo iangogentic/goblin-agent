@@ -1,0 +1,26 @@
+[package]
+name = "goblin_cli"
+version = "0.1.0"
+edition = "2021"
+description = "Goblin CLI - Setup wizard and commands"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+# Error handling
+anyhow = "1"
+thiserror = "1"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Directories
+dirs = "5"
+
+[dev-dependencies]
+tempfile = "3"

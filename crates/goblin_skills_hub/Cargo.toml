@@ -1,0 +1,22 @@
+[package]
+name = "goblin_skills_hub"
+version = "0.1.0"
+edition = "2021"
+description = "Goblin Skills Hub Client - Connect to skills marketplace"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+# HTTP client
+reqwest = { version = "0.12", features = ["json"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+
+# Async
+tokio = { version = "1", features = ["full"] }
+
+# Error handling
+anyhow = "1"

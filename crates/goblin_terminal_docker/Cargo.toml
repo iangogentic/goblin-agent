@@ -1,0 +1,29 @@
+[package]
+name = "goblin_terminal_docker"
+version = "0.1.0"
+edition = "2021"
+description = "Goblin Docker Terminal Backend"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+# Docker client
+bollard = "0.17"
+
+# Async
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Encoding
+base64 = "0.22"
+
+# Error handling
+anyhow = "1"
+thiserror = "1"
+
+# Tar handling
+tar = "0.4"

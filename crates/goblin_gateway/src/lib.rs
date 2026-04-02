@@ -334,7 +334,7 @@ impl SlackGateway {
 
     /// Verify a Slack request signature
     #[allow(dead_code)]
-    pub fn verify_signature(&self, timestamp: &str, body: &str, signature: &str) -> bool {
+    pub fn verify_signature(&self, timestamp: &str, body: &str, _signature: &str) -> bool {
         use std::collections::hash_map::DefaultHasher;
         use std::hash::{Hash, Hasher};
         

@@ -1,5 +1,17 @@
 [workspace]
-members = ["crates/*"]
+members = [
+    "crates/*",
+    "crates/goblin_honcho",
+    "crates/goblin_cli",
+    "crates/goblin_personalities",
+    "crates/goblin_skills_hub",
+    "crates/goblin_gateway_whatsapp",
+]
+exclude = [
+    "crates/goblin_gateway_email",
+    "crates/goblin_terminal_docker",
+    "crates/goblin_terminal_ssh",
+]
 resolver = "2"
 
 
@@ -166,3 +178,10 @@ goblin_test_kit = { path = "crates/goblin_test_kit" }
 goblin_markdown_stream = { path = "crates/goblin_markdown_stream" }
 goblin_config = { path = "crates/goblin_config" }
 goblin_gateway = { path = "crates/goblin_gateway" }
+
+# New Hermes Brain Crates (optional - require system deps)
+goblin_honcho = { path = "crates/goblin_honcho" }
+goblin_cli = { path = "crates/goblin_cli" }
+goblin_personalities = { path = "crates/goblin_personalities" }
+goblin_skills_hub = { path = "crates/goblin_skills_hub" }
+goblin_gateway_whatsapp = { path = "crates/goblin_gateway_whatsapp" }

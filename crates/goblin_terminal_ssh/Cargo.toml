@@ -1,0 +1,22 @@
+[package]
+name = "goblin_terminal_ssh"
+version = "0.1.0"
+edition = "2021"
+description = "Goblin SSH Terminal Backend"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+# SSH client
+ssh2 = "0.9"
+
+# Async
+tokio = { version = "1", features = ["full"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Error handling
+anyhow = "1"
+thiserror = "1"
