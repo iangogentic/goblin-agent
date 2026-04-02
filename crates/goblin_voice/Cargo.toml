@@ -1,0 +1,60 @@
+[package]
+name = "goblin_voice"
+version = "0.1.0"
+edition = "2021"
+description = "Voice transcription for Goblin using Whisper"
+authors = ["Goblin Team"]
+license = "MIT"
+homepage = "https://github.com/iangogentic/goblin-agent"
+repository = "https://github.com/iangogentic/goblin-agent"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.45", features = ["full"] }
+
+# Audio processing
+hound = "3.5"
+rodio = { version = "0.19", features = ["wav"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# HTTP client
+reqwest = { version = "0.12", features = ["json", "stream"] }
+
+# Whisper (native Rust implementation)
+# Note: In production, you might want to use whisper.cpp bindings
+# For now, we provide a mock implementation that can be swapped
+
+# Error handling
+anyhow = "1.0"
+thiserror = "2.0"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID
+uuid = { version = "1.11", features = ["v4", "serde"] }
+
+# Logging
+tracing = "0.1"
+
+# Async channels
+async-channel = "2.3"
+
+# File handling
+futures-util = "0.3"
+
+# Base64 encoding
+base64 = "0.22"
+
+# WAV parsing
+wav = "1.0"
+
+# Regex for command parsing
+regex = "1.10"
+
+[dev-dependencies]
+tokio-test = "0.4"
+tempfile = "3.14"

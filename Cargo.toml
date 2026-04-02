@@ -6,6 +6,9 @@ members = [
     "crates/goblin_personalities",
     "crates/goblin_skills_hub",
     "crates/goblin_gateway_whatsapp",
+    "crates/goblin_research",
+    "crates/goblin_acp",
+    "crates/goblin_voice",
 ]
 exclude = [
     "crates/goblin_gateway_email",

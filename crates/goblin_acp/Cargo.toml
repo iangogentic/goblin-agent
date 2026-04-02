@@ -1,0 +1,46 @@
+[package]
+name = "goblin_acp"
+version = "0.1.0"
+edition = "2021"
+description = "Agent Communication Protocol for multi-agent coordination"
+authors = ["Goblin Team"]
+license = "MIT"
+homepage = "https://github.com/iangogentic/goblin-agent"
+repository = "https://github.com/iangogentic/goblin-agent"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.45", features = ["full"] }
+tokio-stream = "0.1"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Networking
+reqwest = { version = "0.12", features = ["json"] }
+
+# UUID
+uuid = { version = "1.11", features = ["v4", "serde"] }
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Logging
+tracing = "0.1"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "2.0"
+
+# Async channels
+async-channel = "2.3"
+
+# Hash maps
+dashmap = "5.5"
+
+# Async trait
+async-trait = "0.1"
+
+[dev-dependencies]
+tokio-test = "0.4"
