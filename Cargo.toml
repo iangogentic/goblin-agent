@@ -57,6 +57,9 @@ insta = { version = "1.47.2", features = ["json", "yaml"] }
 lazy_static = "1.4.0"
 machineid-rs = "1.2.4"
 mockito = "1.7.2"
+# Binary encoding
+hex = "0.4"
+libsqlite3-sys = "0.36"
 nom = "8.0.0"
 nu-ansi-term = "0.50.1"
 posthog-rs = { git = "https://github.com/PostHog/posthog-rs.git", rev = "a006a81419031e4889d9c3882d7458d2efa588a8" }
@@ -80,6 +83,7 @@ schemars = "1.2"
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = "1.0.143"
 serde_yml = "0.0.12"
+serde_yaml = "0.9"
 sha2 = "0.10"
 similar = { version = "2.4", features = ["inline"] }
 strip-ansi-escapes = "0.2.1"
@@ -154,8 +158,11 @@ goblin_tool_macros = { path = "crates/goblin_tool_macros" }
 goblin_tracker = { path = "crates/goblin_tracker" }
 goblin_walker = { path = "crates/goblin_walker" }
 goblin_json_repair = { path = "crates/goblin_json_repair" }
+goblin_core = { path = "crates/goblin_core" }
+goblin_cron = { path = "crates/goblin_cron" }
 goblin_select = { path = "crates/goblin_select" }
 goblin_test_kit = { path = "crates/goblin_test_kit" }
 
 goblin_markdown_stream = { path = "crates/goblin_markdown_stream" }
 goblin_config = { path = "crates/goblin_config" }
+goblin_gateway = { path = "crates/goblin_gateway" }

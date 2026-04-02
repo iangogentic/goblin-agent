@@ -45,7 +45,18 @@ impl FormatContent for ToolOperation {
             | ToolOperation::NetFetch { input: _, output: _ }
             | ToolOperation::Shell { output: _ }
             | ToolOperation::FollowUp { output: _ }
-            | ToolOperation::Skill { output: _ } => None,
+            | ToolOperation::Skill { output: _ }
+            // Hermes brain tools
+            | ToolOperation::MemoryCheckpoint { input: _, output: _ }
+            | ToolOperation::MemoryCompact { input: _, output: _ }
+            | ToolOperation::MemorySearch { input: _, output: _ }
+            | ToolOperation::MemorySummarize { input: _, output: _ }
+            | ToolOperation::SkillCreate { input: _, output: _ }
+            | ToolOperation::SkillImprove { input: _, output: _ }
+            | ToolOperation::SkillList { output: _ }
+            | ToolOperation::ScheduleCreate { input: _, output: _ }
+            | ToolOperation::ScheduleCancel { input: _, output: _ }
+            | ToolOperation::ScheduleList { output: _ } => None,
         }
     }
 }

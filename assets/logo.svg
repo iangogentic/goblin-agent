@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="goblinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="180" fill="#0f172a"/>
+  
+  <!-- Goblin head shape -->
+  <ellipse cx="200" cy="220" rx="120" ry="130" fill="url(#goblinGrad)"/>
+  
+  <!-- Ears -->
+  <ellipse cx="70" cy="180" rx="50" ry="25" fill="url(#goblinGrad)" transform="rotate(-30 70 180)"/>
+  <ellipse cx="330" cy="180" rx="50" ry="25" fill="url(#goblinGrad)" transform="rotate(30 330 180)"/>
+  
+  <!-- Inner ear -->
+  <ellipse cx="75" cy="175" rx="30" ry="15" fill="#047857" transform="rotate(-30 75 175)"/>
+  <ellipse cx="325" cy="175" rx="30" ry="15" fill="#047857" transform="rotate(30 325 175)"/>
+  
+  <!-- Eyes -->
+  <ellipse cx="150" cy="200" rx="35" ry="40" fill="#fef3c7"/>
+  <ellipse cx="250" cy="200" rx="35" ry="40" fill="#fef3c7"/>
+  
+  <!-- Pupils -->
+  <ellipse cx="155" cy="205" rx="15" ry="20" fill="#1e293b"/>
+  <ellipse cx="255" cy="205" rx="15" ry="20" fill="#1e293b"/>
+  
+  <!-- Eye shine -->
+  <circle cx="150" cy="195" r="5" fill="white"/>
+  <circle cx="250" cy="195" r="5" fill="white"/>
+  
+  <!-- Eyebrows -->
+  <path d="M115 170 Q150 150 185 170" stroke="#065f46" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M215 170 Q250 150 285 170" stroke="#065f46" stroke-width="8" fill="none" stroke-linecap="round"/>
+  
+  <!-- Nose -->
+  <ellipse cx="200" cy="250" rx="25" ry="20" fill="#047857"/>
+  <ellipse cx="190" cy="255" rx="8" ry="6" fill="#065f46"/>
+  <ellipse cx="210" cy="255" rx="8" ry="6" fill="#065f46"/>
+  
+  <!-- Mouth -->
+  <path d="M150 290 Q200 320 250 290" stroke="#065f46" stroke-width="5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Teeth -->
+  <path d="M165 290 L170 305 L175 290" fill="#fef3c7"/>
+  <path d="M185 293 L190 310 L195 293" fill="#fef3c7"/>
+  <path d="M205 293 L210 310 L215 293" fill="#fef3c7"/>
+  <path d="M225 290 L230 305 L235 290" fill="#fef3c7"/>
+  
+  <!-- Freckles/spots -->
+  <circle cx="160" cy="240" r="4" fill="#047857"/>
+  <circle cx="240" cy="240" r="4" fill="#047857"/>
+  <circle cx="150" cy="260" r="3" fill="#047857"/>
+  <circle cx="250" cy="260" r="3" fill="#047857"/>
+  
+  <!-- Glow effect -->
+  <circle cx="200" cy="200" r="175" fill="none" stroke="#10b981" stroke-width="3" opacity="0.3" filter="url(#glow)"/>
+</svg>

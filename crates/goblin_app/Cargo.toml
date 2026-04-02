@@ -46,6 +46,9 @@ glob.workspace = true
 lazy_static.workspace = true
 goblin_json_repair.workspace = true
 
+goblin_core.workspace = true
+goblin_cron.workspace = true
+
 tonic.workspace = true
 
 

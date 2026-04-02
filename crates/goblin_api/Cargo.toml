@@ -13,21 +13,8 @@ goblin_stream.workspace = true
 goblin_services.workspace = true
 goblin_repo.workspace = true
 goblin_infra.workspace = true
-futures.workspace = true
-
-
-
-
-
-
-
-
 goblin_app.workspace = true
+futures.workspace = true
 serde_json.workspace = true
 goblin_config.workspace = true
-
-[dev-dependencies]
-
-tokio = { workspace = true }
-
-
+tokio.workspace = true

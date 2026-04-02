@@ -11,10 +11,10 @@ mod error;
 mod fd;
 mod fd_git;
 mod fd_walker;
-mod goblin_services;
 mod instructions;
 mod mcp;
 mod policy;
+mod services;
 
 mod provider_auth;
 mod provider_service;
@@ -29,10 +29,11 @@ pub use command::*;
 pub use context_engine::*;
 pub use discovery::*;
 pub use error::*;
-pub use goblin_services::*;
 pub use instructions::*;
 pub use policy::*;
 pub use provider_auth::*;
+pub use services::GoblinServices;
+pub use tool_services::*;
 
 /// Converts a type from its external representation into its domain model
 /// representation.

@@ -59,6 +59,17 @@ fn to_op(tool: &SummaryTool) -> Operation<'_> {
         SummaryTool::Mcp { name } => Operation::Mcp(name),
         SummaryTool::TodoWrite { .. } => Operation::Todo,
         SummaryTool::TodoRead => Operation::Todo,
+        // Hermes brain tools - treated as memory/skill operations
+        SummaryTool::MemoryCheckpoint { label } => Operation::Skill(label),
+        SummaryTool::MemoryCompact { .. } => Operation::Todo,
+        SummaryTool::MemorySearch { query: _ } => Operation::Todo,
+        SummaryTool::MemorySummarize { .. } => Operation::Todo,
+        SummaryTool::SkillCreate { name } => Operation::Skill(name),
+        SummaryTool::SkillImprove { name, .. } => Operation::Skill(name),
+        SummaryTool::SkillList { .. } => Operation::Todo,
+        SummaryTool::ScheduleCreate { schedule: _ } => Operation::Todo,
+        SummaryTool::ScheduleCancel { .. } => Operation::Todo,
+        SummaryTool::ScheduleList => Operation::Todo,
     }
 }
 

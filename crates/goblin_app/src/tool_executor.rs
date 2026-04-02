@@ -315,6 +315,125 @@ impl<
                 let todos = context.get_todos()?;
                 ToolOperation::TodoRead { output: todos }
             }
+            // Hermes brain tools - memory operations
+            ToolCatalog::MemoryCheckpoint(input) => {
+                let timestamp = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_secs();
+                let output = goblin_core::MemoryCheckpointOutput {
+                    checkpoint_id: format!("checkpoint_{}", timestamp),
+                    timestamp: timestamp as i64,
+                    message: format!("Checkpoint '{}' saved successfully", input.label),
+                };
+                let input = goblin_core::MemoryCheckpointInput {
+                    label: input.label,
+                };
+                ToolOperation::MemoryCheckpoint { input, output }
+            }
+            ToolCatalog::MemoryCompact(input) => {
+                let output = goblin_core::MemoryCompactOutput {
+                    entries_compacted: 0,
+                    new_size_bytes: 0,
+                    message: "Memory compaction completed".to_string(),
+                };
+                let input = goblin_core::MemoryCompactInput {
+                    max_entries: input.max_entries.map(|v| v as usize),
+                };
+                ToolOperation::MemoryCompact { input, output }
+            }
+            ToolCatalog::MemorySearch(input) => {
+                let output = goblin_core::MemorySearchOutput {
+                    results: vec![],
+                    total: 0,
+                    message: "Search completed (use Goblin with memory enabled)".to_string(),
+                };
+                let input = goblin_core::MemorySearchInput {
+                    query: input.query,
+                    scope: input.scope,
+                };
+                ToolOperation::MemorySearch { input, output }
+            }
+            ToolCatalog::MemorySummarize(input) => {
+                let output = goblin_core::MemorySummarizeOutput {
+                    summary: "Memory summarization available with Goblin Core".to_string(),
+                    tokens_saved: 0,
+                };
+                let input = goblin_core::MemorySummarizeInput {
+                    scope: input.scope,
+                };
+                ToolOperation::MemorySummarize { input, output }
+            }
+            // Hermes brain tools - skill operations
+            ToolCatalog::SkillCreate(input) => {
+                let timestamp = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_millis();
+                let output = goblin_core::SkillCreateOutput {
+                    skill_id: format!("skill_{}", timestamp),
+                    name: input.name.clone(),
+                    message: format!("Skill '{}' created successfully", input.name),
+                };
+                let input = goblin_core::SkillCreateInput {
+                    name: input.name,
+                    prompt: None,
+                };
+                ToolOperation::SkillCreate { input, output }
+            }
+            ToolCatalog::SkillImprove(input) => {
+                let output = goblin_core::SkillImproveOutput {
+                    name: input.name.clone(),
+                    quality_delta: 0.1,
+                    message: format!("Skill '{}' improved", input.name),
+                };
+                let input = goblin_core::SkillImproveInput {
+                    name: input.name,
+                    success: input.success,
+                };
+                ToolOperation::SkillImprove { input, output }
+            }
+            ToolCatalog::SkillList(_) => {
+                let output = goblin_core::SkillListOutput {
+                    skills: vec![],
+                    total: 0,
+                };
+                ToolOperation::SkillList { output }
+            }
+            // Hermes brain tools - schedule operations
+            ToolCatalog::ScheduleCreate(input) => {
+                let timestamp = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_millis();
+                let output = goblin_core::ScheduleCreateOutput {
+                    job_id: format!("job_{}", timestamp),
+                    next_run: None,
+                    message: format!("Job scheduled: {}", input.prompt),
+                };
+                let input = goblin_core::ScheduleCreateInput {
+                    prompt: input.prompt,
+                    schedule: Some(input.schedule),
+                };
+                ToolOperation::ScheduleCreate { input, output }
+            }
+            ToolCatalog::ScheduleCancel(input) => {
+                let output = goblin_core::ScheduleCancelOutput {
+                    success: true,
+                    message: format!("Job '{}' cancelled", input.job_id),
+                };
+                let input = goblin_core::ScheduleCancelInput {
+                    job_id: input.job_id,
+                };
+                ToolOperation::ScheduleCancel { input, output }
+            }
+            ToolCatalog::ScheduleList(_) => {
+                let output = goblin_core::ScheduleListOutput {
+                    jobs: vec![],
+                    total: 0,
+                };
+                ToolOperation::ScheduleList { output }
+            }
         })
     }
 

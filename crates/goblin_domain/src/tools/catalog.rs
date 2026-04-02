@@ -55,6 +55,17 @@ pub enum ToolCatalog {
     Skill(SkillFetch),
     TodoWrite(TodoWrite),
     TodoRead(TodoRead),
+    // Hermes brain tools
+    MemoryCheckpoint(MemoryCheckpoint),
+    MemoryCompact(MemoryCompact),
+    MemorySearch(MemorySearch),
+    MemorySummarize(MemorySummarize),
+    SkillCreate(SkillCreate),
+    SkillImprove(SkillImprove),
+    SkillList(SkillList),
+    ScheduleCreate(ScheduleCreate),
+    ScheduleCancel(ScheduleCancel),
+    ScheduleList(ScheduleList),
 }
 
 /// Input structure for agent tool calls. This serves as the generic schema
@@ -662,6 +673,106 @@ pub struct TodoWrite {
 #[tool_description_file = "crates/goblin_domain/src/tools/descriptions/todo_read.md"]
 pub struct TodoRead {}
 
+// ============================================
+// Hermes Brain Tools - Memory, Skills, Scheduling
+// ============================================
+
+/// Create a checkpoint of current memory state
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct MemoryCheckpoint {
+    /// Label for the checkpoint
+    pub label: String,
+}
+
+/// Compact memories for context budget
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct MemoryCompact {
+    /// Maximum number of memory entries to keep
+    pub max_entries: Option<u32>,
+}
+
+/// Search through memories
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct MemorySearch {
+    /// Search query
+    pub query: String,
+    /// Memory scope filter (global, project, session)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<String>,
+}
+
+/// Summarize memory entries to reduce context size
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct MemorySummarize {
+    /// Memory scope to summarize (global, project, session)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<String>,
+    /// Maximum number of entries to keep
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_entries: Option<usize>,
+}
+
+/// Create a new skill from experience
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct SkillCreate {
+    /// Name for the new skill
+    pub name: String,
+    /// Description of what the skill does
+    pub description: String,
+    /// The task that was solved
+    pub task: String,
+    /// The solution pattern discovered
+    pub solution: String,
+    /// Context for the skill
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub context: Option<String>,
+}
+
+/// Improve an existing skill
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct SkillImprove {
+    /// Name of the skill to improve
+    pub name: String,
+    /// Feedback on the skill (success or failure)
+    pub success: bool,
+    /// Optional notes about the improvement
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub notes: Option<String>,
+}
+
+/// List all available skills
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct SkillList {
+    /// Filter by skill name pattern
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub filter: Option<String>,
+}
+
+/// Create a scheduled automation
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct ScheduleCreate {
+    /// Natural language schedule (e.g., "every day at 9am")
+    pub schedule: String,
+    /// Description of the job
+    pub description: String,
+    /// The prompt/task to execute
+    pub prompt: String,
+    /// Platform to deliver results (telegram, discord, slack)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub platform: Option<String>,
+}
+
+/// Cancel a scheduled job
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct ScheduleCancel {
+    /// ID of the job to cancel
+    pub job_id: String,
+}
+
+/// List scheduled jobs
+#[derive(Default, Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq)]
+pub struct ScheduleList {}
+
 fn default_raw() -> Option<bool> {
     Some(false)
 }
@@ -767,6 +878,17 @@ impl ToolDescription for ToolCatalog {
             ToolCatalog::Skill(v) => v.description(),
             ToolCatalog::TodoWrite(v) => v.description(),
             ToolCatalog::TodoRead(v) => v.description(),
+            // Hermes brain tools - basic descriptions for now
+            ToolCatalog::MemoryCheckpoint(_) => "Create a checkpoint of current memory state".to_string(),
+            ToolCatalog::MemoryCompact(_) => "Compact memories for context budget".to_string(),
+            ToolCatalog::MemorySearch(_) => "Search through memories".to_string(),
+            ToolCatalog::MemorySummarize(_) => "Summarize memory entries".to_string(),
+            ToolCatalog::SkillCreate(_) => "Create a new skill from experience".to_string(),
+            ToolCatalog::SkillImprove(_) => "Improve an existing skill".to_string(),
+            ToolCatalog::SkillList(_) => "List all available skills".to_string(),
+            ToolCatalog::ScheduleCreate(_) => "Create a scheduled automation".to_string(),
+            ToolCatalog::ScheduleCancel(_) => "Cancel a scheduled job".to_string(),
+            ToolCatalog::ScheduleList(_) => "List scheduled jobs".to_string(),
         }
     }
 }
@@ -824,6 +946,17 @@ impl ToolCatalog {
             ToolCatalog::Skill(_) => r#gen.into_root_schema_for::<SkillFetch>(),
             ToolCatalog::TodoWrite(_) => r#gen.into_root_schema_for::<TodoWrite>(),
             ToolCatalog::TodoRead(_) => r#gen.into_root_schema_for::<TodoRead>(),
+            // Hermes brain tools
+            ToolCatalog::MemoryCheckpoint(_) => r#gen.into_root_schema_for::<MemoryCheckpoint>(),
+            ToolCatalog::MemoryCompact(_) => r#gen.into_root_schema_for::<MemoryCompact>(),
+            ToolCatalog::MemorySearch(_) => r#gen.into_root_schema_for::<MemorySearch>(),
+            ToolCatalog::MemorySummarize(_) => r#gen.into_root_schema_for::<MemorySummarize>(),
+            ToolCatalog::SkillCreate(_) => r#gen.into_root_schema_for::<SkillCreate>(),
+            ToolCatalog::SkillImprove(_) => r#gen.into_root_schema_for::<SkillImprove>(),
+            ToolCatalog::SkillList(_) => r#gen.into_root_schema_for::<SkillList>(),
+            ToolCatalog::ScheduleCreate(_) => r#gen.into_root_schema_for::<ScheduleCreate>(),
+            ToolCatalog::ScheduleCancel(_) => r#gen.into_root_schema_for::<ScheduleCancel>(),
+            ToolCatalog::ScheduleList(_) => r#gen.into_root_schema_for::<ScheduleList>(),
         };
 
         // Apply transform to add nullable property and remove null from type
@@ -939,7 +1072,17 @@ impl ToolCatalog {
             | ToolCatalog::Plan(_)
             | ToolCatalog::Skill(_)
             | ToolCatalog::TodoWrite(_)
-            | ToolCatalog::TodoRead(_) => None,
+            | ToolCatalog::TodoRead(_)
+            | ToolCatalog::MemoryCheckpoint(_)
+            | ToolCatalog::MemoryCompact(_)
+            | ToolCatalog::MemorySearch(_)
+            | ToolCatalog::MemorySummarize(_)
+            | ToolCatalog::SkillCreate(_)
+            | ToolCatalog::SkillImprove(_)
+            | ToolCatalog::SkillList(_)
+            | ToolCatalog::ScheduleCreate(_)
+            | ToolCatalog::ScheduleCancel(_)
+            | ToolCatalog::ScheduleList(_) => None,
         }
     }
 

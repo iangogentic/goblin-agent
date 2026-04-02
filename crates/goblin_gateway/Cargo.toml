@@ -6,7 +6,7 @@ rust-version.workspace = true
 
 [dependencies]
 # Async runtime
-tokio = { workspace = true, features = ["sync", "rt", "macros"] }
+tokio = { workspace = true, features = ["sync", "rt", "macros", "time"] }
 
 # HTTP
 reqwest = { workspace = true }
@@ -19,8 +19,17 @@ serde_json = { workspace = true }
 anyhow = { workspace = true }
 thiserror = { workspace = true }
 
+# Async traits
+async-trait = { workspace = true }
+
 # Tracing
 tracing = { workspace = true }
+
+# Hex encoding (for Slack signature verification)
+hex = "0.4"
+
+# Date/time handling
+chrono = { workspace = true }
 
 [lib]
 name = "goblin_gateway"

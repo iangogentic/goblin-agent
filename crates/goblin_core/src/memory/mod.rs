@@ -19,7 +19,7 @@ use std::path::PathBuf;
 use uuid::Uuid;
 
 /// Memory scope levels (most-specific wins)
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum MemoryScope {
     Session = 0,
     Project = 1,

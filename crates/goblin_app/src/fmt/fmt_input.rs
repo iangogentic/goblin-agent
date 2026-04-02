@@ -125,6 +125,25 @@ impl FormatContent for ToolCatalog {
                     .into(),
             ),
             ToolCatalog::TodoRead(_) => Some(TitleFormat::debug("Read Todos").into()),
+            // Hermes brain tools
+            ToolCatalog::MemoryCheckpoint(input) => Some(
+                TitleFormat::debug("Memory Checkpoint")
+                    .sub_title(&input.label)
+                    .into(),
+            ),
+            ToolCatalog::MemoryCompact(_) => Some(TitleFormat::debug("Compact Memory").into()),
+            ToolCatalog::MemorySearch(_) => Some(TitleFormat::debug("Search Memory").into()),
+            ToolCatalog::MemorySummarize(_) => Some(TitleFormat::debug("Summarize Memory").into()),
+            ToolCatalog::SkillCreate(_) => Some(TitleFormat::debug("Create Skill").into()),
+            ToolCatalog::SkillImprove(input) => Some(
+                TitleFormat::debug("Improve Skill")
+                    .sub_title(&input.name)
+                    .into(),
+            ),
+            ToolCatalog::SkillList(_) => Some(TitleFormat::debug("List Skills").into()),
+            ToolCatalog::ScheduleCreate(_) => Some(TitleFormat::debug("Schedule Job").into()),
+            ToolCatalog::ScheduleCancel(_) => Some(TitleFormat::debug("Cancel Job").into()),
+            ToolCatalog::ScheduleList(_) => Some(TitleFormat::debug("List Jobs").into()),
         }
     }
 }

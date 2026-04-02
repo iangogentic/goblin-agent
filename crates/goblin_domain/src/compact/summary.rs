@@ -194,6 +194,17 @@ pub enum SummaryTool {
     Mcp { name: String },
     TodoWrite { changes: Vec<TodoChange> },
     TodoRead,
+    // Hermes brain tools
+    MemoryCheckpoint { label: String },
+    MemoryCompact { max_entries: Option<u32> },
+    MemorySearch { query: String },
+    MemorySummarize,
+    SkillCreate { name: String },
+    SkillImprove { name: String, success: bool },
+    SkillList,
+    ScheduleCreate { schedule: String },
+    ScheduleCancel { job_id: String },
+    ScheduleList,
 }
 
 /// The kind of change applied to a todo item
@@ -402,6 +413,17 @@ fn extract_tool_info(call: &ToolCallFull, current_todos: &[Todo]) -> Option<Summ
                 Some(SummaryTool::TodoWrite { changes })
             }
             ToolCatalog::TodoRead(_) => Some(SummaryTool::TodoRead),
+            // Hermes brain tools
+            ToolCatalog::MemoryCheckpoint(input) => Some(SummaryTool::MemoryCheckpoint { label: input.label }),
+            ToolCatalog::MemoryCompact(input) => Some(SummaryTool::MemoryCompact { max_entries: input.max_entries }),
+            ToolCatalog::MemorySearch(input) => Some(SummaryTool::MemorySearch { query: input.query }),
+            ToolCatalog::MemorySummarize(_) => Some(SummaryTool::MemorySummarize),
+            ToolCatalog::SkillCreate(input) => Some(SummaryTool::SkillCreate { name: input.name }),
+            ToolCatalog::SkillImprove(input) => Some(SummaryTool::SkillImprove { name: input.name, success: input.success }),
+            ToolCatalog::SkillList(_) => Some(SummaryTool::SkillList),
+            ToolCatalog::ScheduleCreate(input) => Some(SummaryTool::ScheduleCreate { schedule: input.schedule }),
+            ToolCatalog::ScheduleCancel(input) => Some(SummaryTool::ScheduleCancel { job_id: input.job_id }),
+            ToolCatalog::ScheduleList(_) => Some(SummaryTool::ScheduleList),
         };
     }
 

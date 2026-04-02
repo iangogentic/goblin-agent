@@ -2,10 +2,10 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 
-package forge.v1;
+package goblin.v1;
 
 // Main service for interacting with Forge's context engine
-service ForgeService {
+service GoblinService {
   // Searches for nodes matching a query
   rpc Search(SearchRequest) returns (SearchResponse);
 

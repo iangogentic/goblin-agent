@@ -82,6 +82,47 @@ pub enum ToolOperation {
     TodoRead {
         output: Vec<goblin_domain::Todo>,
     },
+    // Hermes brain memory tools
+    MemoryCheckpoint {
+        input: goblin_core::MemoryCheckpointInput,
+        output: goblin_core::MemoryCheckpointOutput,
+    },
+    MemorySearch {
+        input: goblin_core::MemorySearchInput,
+        output: goblin_core::MemorySearchOutput,
+    },
+    MemoryCompact {
+        input: goblin_core::MemoryCompactInput,
+        output: goblin_core::MemoryCompactOutput,
+    },
+    MemorySummarize {
+        input: goblin_core::MemorySummarizeInput,
+        output: goblin_core::MemorySummarizeOutput,
+    },
+    // Hermes brain skill tools
+    SkillCreate {
+        input: goblin_core::SkillCreateInput,
+        output: goblin_core::SkillCreateOutput,
+    },
+    SkillImprove {
+        input: goblin_core::SkillImproveInput,
+        output: goblin_core::SkillImproveOutput,
+    },
+    SkillList {
+        output: goblin_core::SkillListOutput,
+    },
+    // Hermes brain schedule tools
+    ScheduleCreate {
+        input: goblin_core::ScheduleCreateInput,
+        output: goblin_core::ScheduleCreateOutput,
+    },
+    ScheduleCancel {
+        input: goblin_core::ScheduleCancelInput,
+        output: goblin_core::ScheduleCancelOutput,
+    },
+    ScheduleList {
+        output: goblin_core::ScheduleListOutput,
+    },
 }
 
 /// Trait for stream elements that can be converted to XML elements
@@ -703,6 +744,71 @@ impl ToolOperation {
                     elm = elm.append(todo_elm);
                 }
 
+                goblin_domain::ToolOutput::text(elm)
+            }
+            // Hermes brain tool outputs
+            ToolOperation::MemoryCheckpoint { input, output } => {
+                let elm = Element::new("memory_checkpoint")
+                    .attr("id", &output.checkpoint_id)
+                    .attr("timestamp", output.timestamp)
+                    .text(&output.message);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::MemoryCompact { input: _, output } => {
+                let elm = Element::new("memory_compact")
+                    .attr("entries_compacted", output.entries_compacted)
+                    .attr("size_bytes", output.new_size_bytes)
+                    .text(&output.message);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::MemorySearch { input: _, output } => {
+                let elm = Element::new("memory_search")
+                    .attr("total", output.total)
+                    .text(&output.message);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::MemorySummarize { input: _, output } => {
+                let elm = Element::new("memory_summarize")
+                    .attr("tokens_saved", output.tokens_saved)
+                    .text(&output.summary);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::SkillCreate { input: _, output } => {
+                let elm = Element::new("skill_create")
+                    .attr("skill_id", &output.skill_id)
+                    .text(&output.message);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::SkillImprove { input: _, output } => {
+                let elm = Element::new("skill_improve")
+                    .attr("name", &output.name)
+                    .attr("quality_delta", output.quality_delta)
+                    .text(&output.message);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::SkillList { output } => {
+                let elm = Element::new("skill_list")
+                    .attr("total", output.total);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::ScheduleCreate { input: _, output } => {
+                let mut elm = Element::new("schedule_create")
+                    .attr("job_id", &output.job_id)
+                    .text(&output.message);
+                if let Some(next) = output.next_run {
+                    elm = elm.attr("next_run", next);
+                }
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::ScheduleCancel { input: _, output } => {
+                let elm = Element::new("schedule_cancel")
+                    .attr("success", output.success)
+                    .text(&output.message);
+                goblin_domain::ToolOutput::text(elm)
+            }
+            ToolOperation::ScheduleList { output } => {
+                let elm = Element::new("schedule_list")
+                    .attr("total", output.total);
                 goblin_domain::ToolOutput::text(elm)
             }
         }

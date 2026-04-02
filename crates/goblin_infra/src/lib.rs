@@ -1,10 +1,10 @@
 mod console;
 mod env;
 pub mod executor;
+mod infra;
 
 mod auth;
 mod error;
-mod goblin_infra;
 mod fs_create_dirs;
 mod fs_meta;
 mod fs_read;
@@ -22,5 +22,5 @@ mod walker;
 pub use console::StdConsoleWriter;
 pub use env::GoblinEnvironmentInfra;
 pub use executor::GoblinCommandExecutorService;
-pub use goblin_infra::*;
+pub use infra::GoblinInfra;
 pub use kv_storage::CacacheStorage;

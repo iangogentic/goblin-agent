@@ -86,7 +86,18 @@ impl Transformer for StripWorkingDir {
                         | SummaryTool::Skill { .. }
                         | SummaryTool::Mcp { .. }
                         | SummaryTool::TodoWrite { .. }
-                        | SummaryTool::TodoRead => {
+                        | SummaryTool::TodoRead
+                        // Hermes brain tools
+                        | SummaryTool::MemoryCheckpoint { .. }
+                        | SummaryTool::MemoryCompact { .. }
+                        | SummaryTool::MemorySearch { .. }
+                        | SummaryTool::MemorySummarize
+                        | SummaryTool::SkillCreate { .. }
+                        | SummaryTool::SkillImprove { .. }
+                        | SummaryTool::SkillList
+                        | SummaryTool::ScheduleCreate { .. }
+                        | SummaryTool::ScheduleCancel { .. }
+                        | SummaryTool::ScheduleList => {
                             // These tools don't have paths to strip
                         }
                     }

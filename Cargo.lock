@@ -1855,562 +1855,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
 
 [[package]]
-name = "forge_api"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "forge_app",
- "forge_config",
- "forge_domain",
- "forge_infra",
- "forge_repo",
- "forge_services",
- "forge_stream",
- "futures",
- "serde_json",
- "tokio",
- "url",
-]
-
-[[package]]
-name = "forge_app"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-recursion",
- "async-trait",
- "backon",
- "bytes",
- "chrono",
- "console",
- "convert_case 0.11.0",
- "dashmap",
- "derive_more",
- "derive_setters",
- "fake",
- "forge_config",
- "forge_display",
- "forge_domain",
- "forge_embed",
- "forge_json_repair",
- "forge_stream",
- "forge_template",
- "forge_test_kit",
- "futures",
- "glob",
- "handlebars",
- "include_dir",
- "insta",
- "lazy_static",
- "merge",
- "pretty_assertions",
- "regex",
- "reqwest 0.12.28",
- "reqwest-eventsource",
- "schemars 1.2.1",
- "serde",
- "serde_json",
- "serde_yml",
- "sha2",
- "strum 0.28.0",
- "strum_macros 0.28.0",
- "tempfile",
- "thiserror 2.0.18",
- "tokio",
- "tokio-stream",
- "tonic",
- "tracing",
- "url",
-]
-
-[[package]]
-name = "forge_ci"
-version = "0.1.0"
-dependencies = [
- "derive_setters",
- "gh-workflow",
- "indexmap 2.13.0",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "forge_config"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "config",
- "derive_setters",
- "dirs",
- "dotenvy",
- "fake",
- "is_ci",
- "pretty_assertions",
- "schemars 1.2.1",
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "tokio",
- "toml_edit",
- "tracing",
- "url",
-]
-
-[[package]]
-name = "forge_display"
-version = "0.1.0"
-dependencies = [
- "console",
- "derive_setters",
- "insta",
- "pretty_assertions",
- "regex",
- "similar",
- "strip-ansi-escapes",
- "syntect",
- "termimad",
-]
-
-[[package]]
-name = "forge_domain"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "base64 0.22.1",
- "chrono",
- "convert_case 0.11.0",
- "derive-getters",
- "derive_more",
- "derive_setters",
- "eserde",
- "fake",
- "fnv_rs",
- "forge_json_repair",
- "forge_template",
- "forge_test_kit",
- "forge_tool_macros",
- "glob",
- "indexmap 2.13.0",
- "insta",
- "is_ci",
- "lazy_static",
- "merge",
- "nom 8.0.0",
- "pretty_assertions",
- "regex",
- "schemars 1.2.1",
- "serde",
- "serde_json",
- "serde_yml",
- "strum 0.28.0",
- "strum_macros 0.28.0",
- "thiserror 2.0.18",
- "tokio",
- "tokio-stream",
- "tracing",
- "url",
- "uuid",
-]
-
-[[package]]
-name = "forge_embed"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "handlebars",
- "include_dir",
-]
-
-[[package]]
-name = "forge_fs"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "forge_domain",
- "infer",
- "pretty_assertions",
- "sha2",
- "tempfile",
- "thiserror 2.0.18",
- "tokio",
-]
-
-[[package]]
-name = "forge_infra"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "backon",
- "base64 0.22.1",
- "bytes",
- "cacache",
- "chrono",
- "diesel",
- "diesel_migrations",
- "dirs",
- "dotenvy",
- "fake",
- "forge_app",
- "forge_config",
- "forge_domain",
- "forge_fs",
- "forge_select",
- "forge_services",
- "forge_snaps",
- "forge_walker",
- "futures",
- "glob",
- "google-cloud-auth",
- "http 1.4.0",
- "libsqlite3-sys",
- "oauth2",
- "pretty_assertions",
- "reqwest 0.12.28",
- "reqwest-eventsource",
- "rmcp",
- "schemars 1.2.1",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "serial_test",
- "tempfile",
- "thiserror 2.0.18",
- "tokio",
- "tonic",
- "tracing",
- "url",
-]
-
-[[package]]
-name = "forge_json_repair"
-version = "0.1.0"
-dependencies = [
- "pretty_assertions",
- "regex",
- "schemars 1.2.1",
- "serde",
- "serde_json",
- "serde_json5",
- "thiserror 2.0.18",
-]
-
-[[package]]
-name = "forge_main"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "arboard",
- "async-recursion",
- "atty",
- "chrono",
- "clap",
- "clap_complete",
- "colored",
- "console",
- "convert_case 0.11.0",
- "derive_setters",
- "enable-ansi-support",
- "fake",
- "forge_api",
- "forge_app",
- "forge_config",
- "forge_display",
- "forge_domain",
- "forge_embed",
- "forge_fs",
- "forge_markdown_stream",
- "forge_select",
- "forge_spinner",
- "forge_tracker",
- "forge_walker",
- "futures",
- "humantime",
- "include_dir",
- "indexmap 2.13.0",
- "insta",
- "lazy_static",
- "merge",
- "nu-ansi-term",
- "nucleo",
- "num-format",
- "open",
- "pretty_assertions",
- "reedline",
- "rustls 0.23.37",
- "serde",
- "serde_json",
- "serial_test",
- "strip-ansi-escapes",
- "strum 0.28.0",
- "strum_macros 0.28.0",
- "tempfile",
- "terminal_size",
- "thiserror 2.0.18",
- "tokio",
- "tokio-stream",
- "tracing",
- "update-informer",
- "url",
-]
-
-[[package]]
-name = "forge_markdown_stream"
-version = "0.1.0"
-dependencies = [
- "colored",
- "insta",
- "streamdown-ansi",
- "streamdown-core",
- "streamdown-parser",
- "streamdown-render",
- "strip-ansi-escapes",
- "syntect",
- "terminal-colorsaurus",
- "unicode-width 0.2.2",
-]
-
-[[package]]
-name = "forge_repo"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-openai",
- "async-trait",
- "aws-credential-types",
- "aws-sdk-bedrockruntime",
- "aws-smithy-async",
- "aws-smithy-runtime",
- "aws-smithy-runtime-api",
- "aws-smithy-types",
- "backon",
- "base64 0.22.1",
- "bytes",
- "chrono",
- "derive_more",
- "derive_setters",
- "diesel",
- "diesel_migrations",
- "dirs",
- "eventsource-stream",
- "fake",
- "forge_app",
- "forge_config",
- "forge_domain",
- "forge_fs",
- "forge_infra",
- "forge_json_repair",
- "forge_snaps",
- "forge_template",
- "forge_test_kit",
- "futures",
- "google-cloud-auth",
- "gray_matter",
- "handlebars",
- "insta",
- "lazy_static",
- "merge",
- "mockito",
- "pretty_assertions",
- "prost",
- "prost-types",
- "regex",
- "reqwest 0.12.28",
- "reqwest-eventsource",
- "schemars 1.2.1",
- "serde",
- "serde_json",
- "serial_test",
- "strum 0.28.0",
- "tempfile",
- "thiserror 2.0.18",
- "tokio",
- "tokio-stream",
- "tonic",
- "tonic-prost",
- "tonic-prost-build",
- "tracing",
- "url",
-]
-
-[[package]]
-name = "forge_select"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "colored",
- "console",
- "fzf-wrapped",
- "pretty_assertions",
- "rustyline",
- "tracing",
-]
-
-[[package]]
-name = "forge_services"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-recursion",
- "async-stream",
- "async-trait",
- "backon",
- "base64 0.22.1",
- "bytes",
- "chrono",
- "dashmap",
- "derive_more",
- "derive_setters",
- "fake",
- "forge_app",
- "forge_config",
- "forge_domain",
- "forge_fs",
- "forge_snaps",
- "forge_stream",
- "forge_test_kit",
- "futures",
- "glob",
- "gray_matter",
- "grep-regex",
- "grep-searcher",
- "handlebars",
- "html2md",
- "http 1.4.0",
- "humantime",
- "ignore",
- "infer",
- "lazy_static",
- "merge",
- "oauth2",
- "pretty_assertions",
- "regex",
- "reqwest 0.12.28",
- "reqwest-eventsource",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "serde_yml",
- "strip-ansi-escapes",
- "strum 0.28.0",
- "strum_macros 0.28.0",
- "tempfile",
- "thiserror 2.0.18",
- "tokio",
- "tokio-stream",
- "tonic",
- "tracing",
- "url",
- "uuid",
-]
-
-[[package]]
-name = "forge_snaps"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "fnv_rs",
- "forge_domain",
- "forge_fs",
- "serde",
- "tempfile",
- "tokio",
- "uuid",
-]
-
-[[package]]
-name = "forge_spinner"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "colored",
- "forge_domain",
- "indicatif",
- "pretty_assertions",
- "rand 0.10.0",
- "tokio",
-]
-
-[[package]]
-name = "forge_stream"
-version = "0.1.0"
-dependencies = [
- "futures",
- "tokio",
-]
-
-[[package]]
-name = "forge_template"
-version = "0.1.0"
-dependencies = [
- "html-escape",
- "pretty_assertions",
-]
-
-[[package]]
-name = "forge_test_kit"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "forge_tool_macros"
-version = "0.1.0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "forge_tracker"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "chrono",
- "convert_case 0.11.0",
- "derive_more",
- "dirs",
- "forge_domain",
- "http 1.4.0",
- "lazy_static",
- "machineid-rs",
- "posthog-rs",
- "pretty_assertions",
- "regex",
- "reqwest 0.12.28",
- "serde",
- "serde_json",
- "sysinfo 0.38.4",
- "tokio",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
- "url",
- "uuid",
- "whoami 2.1.0",
-]
-
-[[package]]
-name = "forge_walker"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "derive_setters",
- "ignore",
- "pretty_assertions",
- "tempfile",
- "tokio",
-]
-
-[[package]]
 name = "form_urlencoded"
 version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2657,6 +2101,611 @@ dependencies = [
  "futures-core",
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "goblin_api"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "futures",
+ "goblin_app",
+ "goblin_config",
+ "goblin_domain",
+ "goblin_infra",
+ "goblin_repo",
+ "goblin_services",
+ "goblin_stream",
+ "serde_json",
+ "tokio",
+ "url",
+]
+
+[[package]]
+name = "goblin_app"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-recursion",
+ "async-trait",
+ "backon",
+ "bytes",
+ "chrono",
+ "console",
+ "convert_case 0.11.0",
+ "dashmap",
+ "derive_more",
+ "derive_setters",
+ "fake",
+ "futures",
+ "glob",
+ "goblin_config",
+ "goblin_core",
+ "goblin_cron",
+ "goblin_display",
+ "goblin_domain",
+ "goblin_embed",
+ "goblin_json_repair",
+ "goblin_stream",
+ "goblin_template",
+ "goblin_test_kit",
+ "handlebars",
+ "include_dir",
+ "insta",
+ "lazy_static",
+ "merge",
+ "pretty_assertions",
+ "regex",
+ "reqwest 0.12.28",
+ "reqwest-eventsource",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "serde_yml",
+ "sha2",
+ "strum 0.28.0",
+ "strum_macros 0.28.0",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-stream",
+ "tonic",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "goblin_ci"
+version = "0.1.0"
+dependencies = [
+ "derive_setters",
+ "gh-workflow",
+ "indexmap 2.13.0",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "goblin_config"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "config",
+ "derive_setters",
+ "dirs",
+ "dotenvy",
+ "fake",
+ "is_ci",
+ "pretty_assertions",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tokio",
+ "toml_edit",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "goblin_core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "dirs",
+ "futures",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-stream",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "goblin_cron"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "serde",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "goblin_display"
+version = "0.1.0"
+dependencies = [
+ "console",
+ "derive_setters",
+ "insta",
+ "pretty_assertions",
+ "regex",
+ "similar",
+ "strip-ansi-escapes",
+ "syntect",
+ "termimad",
+]
+
+[[package]]
+name = "goblin_domain"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64 0.22.1",
+ "chrono",
+ "convert_case 0.11.0",
+ "derive-getters",
+ "derive_more",
+ "derive_setters",
+ "eserde",
+ "fake",
+ "fnv_rs",
+ "glob",
+ "goblin_json_repair",
+ "goblin_template",
+ "goblin_test_kit",
+ "goblin_tool_macros",
+ "indexmap 2.13.0",
+ "insta",
+ "is_ci",
+ "lazy_static",
+ "merge",
+ "nom 8.0.0",
+ "pretty_assertions",
+ "regex",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "serde_yml",
+ "strum 0.28.0",
+ "strum_macros 0.28.0",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-stream",
+ "tracing",
+ "url",
+ "uuid",
+]
+
+[[package]]
+name = "goblin_embed"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "handlebars",
+ "include_dir",
+]
+
+[[package]]
+name = "goblin_fs"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "goblin_domain",
+ "infer",
+ "pretty_assertions",
+ "sha2",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+]
+
+[[package]]
+name = "goblin_gateway"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "hex",
+ "reqwest 0.12.28",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "goblin_infra"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "backon",
+ "base64 0.22.1",
+ "bytes",
+ "cacache",
+ "chrono",
+ "diesel",
+ "diesel_migrations",
+ "dirs",
+ "dotenvy",
+ "fake",
+ "futures",
+ "glob",
+ "goblin_app",
+ "goblin_config",
+ "goblin_domain",
+ "goblin_fs",
+ "goblin_select",
+ "goblin_services",
+ "goblin_snaps",
+ "goblin_walker",
+ "google-cloud-auth",
+ "http 1.4.0",
+ "libsqlite3-sys",
+ "oauth2",
+ "pretty_assertions",
+ "reqwest 0.12.28",
+ "reqwest-eventsource",
+ "rmcp",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "serial_test",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+ "tonic",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "goblin_json_repair"
+version = "0.1.0"
+dependencies = [
+ "pretty_assertions",
+ "regex",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "serde_json5",
+ "thiserror 2.0.18",
+]
+
+[[package]]
+name = "goblin_main"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "arboard",
+ "async-recursion",
+ "atty",
+ "chrono",
+ "clap",
+ "clap_complete",
+ "colored",
+ "console",
+ "convert_case 0.11.0",
+ "derive_setters",
+ "enable-ansi-support",
+ "fake",
+ "futures",
+ "goblin_api",
+ "goblin_app",
+ "goblin_config",
+ "goblin_display",
+ "goblin_domain",
+ "goblin_embed",
+ "goblin_fs",
+ "goblin_markdown_stream",
+ "goblin_select",
+ "goblin_spinner",
+ "goblin_tracker",
+ "goblin_walker",
+ "humantime",
+ "include_dir",
+ "indexmap 2.13.0",
+ "insta",
+ "lazy_static",
+ "merge",
+ "nu-ansi-term",
+ "nucleo",
+ "num-format",
+ "open",
+ "pretty_assertions",
+ "reedline",
+ "rustls 0.23.37",
+ "serde",
+ "serde_json",
+ "serial_test",
+ "strip-ansi-escapes",
+ "strum 0.28.0",
+ "strum_macros 0.28.0",
+ "tempfile",
+ "terminal_size",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-stream",
+ "tracing",
+ "update-informer",
+ "url",
+]
+
+[[package]]
+name = "goblin_markdown_stream"
+version = "0.1.0"
+dependencies = [
+ "colored",
+ "insta",
+ "streamdown-ansi",
+ "streamdown-core",
+ "streamdown-parser",
+ "streamdown-render",
+ "strip-ansi-escapes",
+ "syntect",
+ "terminal-colorsaurus",
+ "unicode-width 0.2.2",
+]
+
+[[package]]
+name = "goblin_repo"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-openai",
+ "async-trait",
+ "aws-credential-types",
+ "aws-sdk-bedrockruntime",
+ "aws-smithy-async",
+ "aws-smithy-runtime",
+ "aws-smithy-runtime-api",
+ "aws-smithy-types",
+ "backon",
+ "base64 0.22.1",
+ "bytes",
+ "chrono",
+ "derive_more",
+ "derive_setters",
+ "diesel",
+ "diesel_migrations",
+ "dirs",
+ "eventsource-stream",
+ "fake",
+ "futures",
+ "goblin_app",
+ "goblin_config",
+ "goblin_domain",
+ "goblin_fs",
+ "goblin_infra",
+ "goblin_json_repair",
+ "goblin_snaps",
+ "goblin_template",
+ "goblin_test_kit",
+ "google-cloud-auth",
+ "gray_matter",
+ "handlebars",
+ "insta",
+ "lazy_static",
+ "merge",
+ "mockito",
+ "pretty_assertions",
+ "prost",
+ "prost-types",
+ "regex",
+ "reqwest 0.12.28",
+ "reqwest-eventsource",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "serial_test",
+ "strum 0.28.0",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-stream",
+ "tonic",
+ "tonic-prost",
+ "tonic-prost-build",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "goblin_select"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "colored",
+ "console",
+ "fzf-wrapped",
+ "pretty_assertions",
+ "rustyline",
+ "tracing",
+]
+
+[[package]]
+name = "goblin_services"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-recursion",
+ "async-stream",
+ "async-trait",
+ "backon",
+ "base64 0.22.1",
+ "bytes",
+ "chrono",
+ "dashmap",
+ "derive_more",
+ "derive_setters",
+ "fake",
+ "futures",
+ "glob",
+ "goblin_app",
+ "goblin_config",
+ "goblin_domain",
+ "goblin_fs",
+ "goblin_snaps",
+ "goblin_stream",
+ "goblin_test_kit",
+ "gray_matter",
+ "grep-regex",
+ "grep-searcher",
+ "handlebars",
+ "html2md",
+ "http 1.4.0",
+ "humantime",
+ "ignore",
+ "infer",
+ "lazy_static",
+ "merge",
+ "oauth2",
+ "pretty_assertions",
+ "regex",
+ "reqwest 0.12.28",
+ "reqwest-eventsource",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "serde_yml",
+ "strip-ansi-escapes",
+ "strum 0.28.0",
+ "strum_macros 0.28.0",
+ "tempfile",
+ "thiserror 2.0.18",
+ "tokio",
+ "tokio-stream",
+ "tonic",
+ "tracing",
+ "url",
+ "uuid",
+]
+
+[[package]]
+name = "goblin_snaps"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "fnv_rs",
+ "goblin_domain",
+ "goblin_fs",
+ "serde",
+ "tempfile",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
+name = "goblin_spinner"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "colored",
+ "goblin_domain",
+ "indicatif",
+ "pretty_assertions",
+ "rand 0.10.0",
+ "tokio",
+]
+
+[[package]]
+name = "goblin_stream"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "tokio",
+]
+
+[[package]]
+name = "goblin_template"
+version = "0.1.0"
+dependencies = [
+ "html-escape",
+ "pretty_assertions",
+]
+
+[[package]]
+name = "goblin_test_kit"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "goblin_tool_macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+]
+
+[[package]]
+name = "goblin_tracker"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "convert_case 0.11.0",
+ "derive_more",
+ "dirs",
+ "goblin_domain",
+ "http 1.4.0",
+ "lazy_static",
+ "machineid-rs",
+ "posthog-rs",
+ "pretty_assertions",
+ "regex",
+ "reqwest 0.12.28",
+ "serde",
+ "serde_json",
+ "sysinfo 0.38.4",
+ "tokio",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+ "url",
+ "uuid",
+ "whoami 2.1.0",
+]
+
+[[package]]
+name = "goblin_walker"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "derive_setters",
+ "ignore",
+ "pretty_assertions",
+ "tempfile",
+ "tokio",
 ]
 
 [[package]]
@@ -5725,6 +5774,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_yaml"
+version = "0.9.34+deprecated"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6a8b1a1a2ebf674015cc02edccce75287f1a0130d394307b36743c2f5d504b47"
+dependencies = [
+ "indexmap 2.13.0",
+ "itoa",
+ "ryu",
+ "serde",
+ "unsafe-libyaml",
+]
+
+[[package]]
 name = "serde_yml"
 version = "0.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6899,6 +6961,12 @@ name = "unit-prefix"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81e544489bf3d8ef66c953931f56617f423cd4b5494be343d9b9d3dda037b9a3"
+
+[[package]]
+name = "unsafe-libyaml"
+version = "0.2.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "673aac59facbab8a9007c7f6108d11f63b603f7cabff99fabf650fea5c32b861"
 
 [[package]]
 name = "untrusted"
