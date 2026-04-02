@@ -71,8 +71,8 @@ impl<I: FileInfoInfra + EnvironmentInfra + DirectoryReaderInfra> GoblinAgentRepo
         parse_agent_iter(
             [
                 ("goblin", include_str!("agents/goblin.md")),
-                ("muse", include_str!("agents/muse.md")),
-                ("sage", include_str!("agents/sage.md")),
+                ("imp", include_str!("agents/imp.md")),
+                ("wisp", include_str!("agents/wisp.md")),
             ]
             .into_iter()
             .map(|(name, content)| (name.to_string(), content.to_string())),

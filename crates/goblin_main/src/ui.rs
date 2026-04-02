@@ -1199,13 +1199,13 @@ impl<A: API + ConsoleWriter + 'static, F: Fn() -> A + Send + Sync> UI<A, F> {
             .add_key_value("type", CommandType::Agent)
             .add_key_value(
                 "description",
-                "Research and investigation agent [alias for: sage]",
+                "Research and investigation agent [alias for: wisp]",
             )
             .add_title("plan")
             .add_key_value("type", CommandType::Agent)
             .add_key_value(
                 "description",
-                "Planning and strategy agent [alias for: muse]",
+                "Planning and strategy agent [alias for: imp]",
             );
 
         // Fetch agents and add them to the commands list
@@ -1860,11 +1860,11 @@ impl<A: API + ConsoleWriter + 'static, F: Fn() -> A + Send + Sync> UI<A, F> {
             SlashCommand::Goblin => {
                 self.on_agent_change(AgentId::GOBLIN).await?;
             }
-            SlashCommand::Muse => {
-                self.on_agent_change(AgentId::MUSE).await?;
+            SlashCommand::Imp => {
+                self.on_agent_change(AgentId::IMP).await?;
             }
-            SlashCommand::Sage => {
-                self.on_agent_change(AgentId::SAGE).await?;
+            SlashCommand::Wisp => {
+                self.on_agent_change(AgentId::WISP).await?;
             }
             SlashCommand::Help => {
                 let info = Info::from(self.command.as_ref());

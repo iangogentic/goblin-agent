@@ -80,8 +80,8 @@ impl GoblinCommandManager {
             name,
             "agent"
                 | "goblin"
-                | "muse"
-                | "sage"
+                | "imp"
+                | "wisp"
                 | "help"
                 | "compact"
                 | "new"
@@ -266,8 +266,8 @@ impl GoblinCommandManager {
                 Ok(SlashCommand::Dump { html })
             }
             "/act" | "/goblin" => Ok(SlashCommand::Goblin),
-            "/plan" | "/muse" => Ok(SlashCommand::Muse),
-            "/sage" => Ok(SlashCommand::Sage),
+            "/plan" | "/imp" => Ok(SlashCommand::Imp),
+            "/wisp" => Ok(SlashCommand::Wisp),
             "/help" => Ok(SlashCommand::Help),
             "/model" => Ok(SlashCommand::Model),
             "/provider" => Ok(SlashCommand::Provider),
@@ -374,16 +374,16 @@ pub enum SlashCommand {
     /// This can be triggered with the '/goblin' command.
     #[strum(props(usage = "Enable implementation mode with code changes"))]
     Goblin,
-    /// Switch to "muse" agent.
+    /// Switch to "imp" agent.
     /// This can be triggered with the '/must' command.
     #[strum(props(usage = "Enable planning mode without code changes"))]
-    Muse,
-    /// Switch to "sage" agent.
-    /// This can be triggered with the '/sage' command.
+    Imp,
+    /// Switch to "wisp" agent.
+    /// This can be triggered with the '/wisp' command.
     #[strum(props(
         usage = "Enable research mode for systematic codebase exploration and analysis"
     ))]
-    Sage,
+    Wisp,
     /// Switch to "help" mode.
     /// This can be triggered with the '/help' command.
     #[strum(props(usage = "Enable help mode for tool questions"))]
@@ -468,8 +468,8 @@ impl SlashCommand {
             SlashCommand::Usage => "usage",
             SlashCommand::Exit => "exit",
             SlashCommand::Goblin => "goblin",
-            SlashCommand::Muse => "muse",
-            SlashCommand::Sage => "sage",
+            SlashCommand::Imp => "imp",
+            SlashCommand::Wisp => "wisp",
             SlashCommand::Help => "help",
             SlashCommand::Commit { .. } => "commit",
             SlashCommand::Dump { .. } => "dump",
@@ -843,7 +843,7 @@ mod tests {
         // Test reserved commands
         assert!(GoblinCommandManager::is_reserved_command("agent"));
         assert!(GoblinCommandManager::is_reserved_command("goblin"));
-        assert!(GoblinCommandManager::is_reserved_command("muse"));
+        assert!(GoblinCommandManager::is_reserved_command("imp"));
         assert!(!GoblinCommandManager::is_reserved_command("agent-custom"));
         assert!(!GoblinCommandManager::is_reserved_command("custom"));
     }

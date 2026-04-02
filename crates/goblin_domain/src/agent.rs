@@ -35,8 +35,8 @@ impl AgentId {
     }
 
     pub const GOBLIN: AgentId = AgentId(Cow::Borrowed("goblin"));
-    pub const MUSE: AgentId = AgentId(Cow::Borrowed("muse"));
-    pub const SAGE: AgentId = AgentId(Cow::Borrowed("sage"));
+    pub const IMP: AgentId = AgentId(Cow::Borrowed("imp"));
+    pub const WISP: AgentId = AgentId(Cow::Borrowed("wisp"));
 }
 
 impl Default for AgentId {
