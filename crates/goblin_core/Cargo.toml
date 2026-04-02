@@ -1,0 +1,47 @@
+[package]
+name = "goblin_core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Async runtime
+tokio = { workspace = true, features = ["sync", "fs", "time"] }
+tokio-stream = { workspace = true }
+
+# Serialization
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+
+# Database
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# Date/Time
+chrono = { workspace = true, features = ["serde"] }
+
+# UUID
+uuid = { workspace = true, features = ["v4", "serde"] }
+
+# Error handling
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Tracing
+tracing = { workspace = true }
+
+# Async traits
+async-trait = { workspace = true }
+
+# Futures
+futures = { workspace = true }
+
+# Directories
+dirs = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+
+[lib]
+name = "goblin_core"
+path = "src/lib.rs"
